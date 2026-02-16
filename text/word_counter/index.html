@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW 字數統計</title>
+    <meta name="description" content="Count words, characters, lines, bytes, and sentences for any text." />
+    <meta name="keywords" content="word counter,text count,character counter,line counter" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>字數統計</h1>
+          <p class="lead">快速統計文字的字數、字元數、行數與位元組。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="field">
+            <label for="wc-input">待統計文字</label>
+            <textarea id="wc-input" placeholder="貼上文章、描述或程式碼"></textarea>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="actions">
+            <button id="wc-sample-btn" class="btn" type="button">載入範例</button>
+            <button id="wc-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="field">
+            <label for="wc-output">統計結果</label>
+            <textarea id="wc-output" readonly placeholder="統計結果會顯示在這裡"></textarea>
+          </div>
+          <div class="actions">
+            <button id="wc-copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 貼上要統計的文字內容。</p>
+          <p>2. 文字變更後會即時更新統計。</p>
+          <p>3. 查看統計數據並複製結果。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>中英文都支援嗎？</strong> 支援，會依空白與字元規則計算。</p>
+          <p><strong>資料會上傳嗎？</strong> 不會，全部在本機完成。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initWordCounter from "/assets/js/tools/word_counter.js?v=1.6.26";
+
+      initLayout();
+      initWordCounter();
+    </script>
+  </body>
+</html>
+
+
+
+

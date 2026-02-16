@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW 工具平台 | 首頁</title>
+    <meta
+      name="description"
+      content="ToolNestTW frontend-only toolbox for JSON, URL, Base64, UUID, Hash, Image, and QR workflows."
+    />
+    <meta
+      name="keywords"
+      content="json formatter,url encoder,base64,uuid generator,hash generator,image resize,image compress,qr code"
+    />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <section class="hero">
+        <h1 id="home-title">ToolNestTW 工具平台</h1>
+        <p id="home-subtitle">快速、直覺，並為手機與桌機最佳化。</p>
+      </section>
+
+      <section class="panel">
+        <h2 id="home-favorites-title">收藏工具</h2>
+        <div id="favorite-tool-list" class="tool-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="panel">
+        <h2 id="home-find-title">搜尋工具</h2>
+        <div class="field search-block">
+          <label id="tool-search-label" for="tool-search">依名稱、分類或關鍵字搜尋</label>
+          <div class="search-row">
+            <input id="tool-search" type="search" placeholder="例如：JSON、雜湊、QR" />
+            <button id="tool-search-clear" class="btn" type="button">清除</button>
+          </div>
+          <div id="home-category-chips" class="chip-row" aria-label="Category filter"></div>
+          <p id="tool-search-count" class="hint"></p>
+        </div>
+        <div id="tool-list" aria-live="polite"></div>
+      </section>
+
+      <section class="panel">
+        <h2 id="home-recent-title">最近使用</h2>
+        <div id="recent-tool-list" class="tool-grid" aria-live="polite"></div>
+      </section>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initHome from "/assets/js/main.js?v=1.6.26";
+
+      initLayout();
+      initHome();
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

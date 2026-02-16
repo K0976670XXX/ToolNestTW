@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW URL 編碼解碼</title>
+    <meta name="description" content="Encode or decode URLs and query strings with instant output." />
+    <meta name="keywords" content="url encode,url decode,query encoder,percent encoding" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>URL 編碼解碼</h1>
+          <p class="lead">在原文與百分比編碼格式間快速轉換 URL。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="field">
+            <label for="url-input">URL 或查詢字串</label>
+            <textarea
+              id="url-input"
+              placeholder="例如：https://example.com/search?q=hello world"
+            ></textarea>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="actions">
+            <button id="encode-btn" class="btn btn-primary" type="button">編碼</button>
+            <button id="decode-btn" class="btn" type="button">解碼</button>
+            <button id="sample-btn" class="btn" type="button">載入範例</button>
+            <button id="clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="field">
+            <label for="url-output">轉換結果</label>
+            <textarea id="url-output" readonly placeholder="結果會顯示在這裡"></textarea>
+          </div>
+          <div class="actions">
+            <button id="copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 貼上要轉換的 URL 或文字。</p>
+          <p>2. 依需求選擇編碼或解碼。</p>
+          <p>3. 複製結果用於程式或 API。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>解碼失敗？</strong> 可能不是有效的百分比編碼格式。</p>
+          <p><strong>手機可以用嗎？</strong> 可以，運算都在本機瀏覽器進行。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initUrlEncodeDecode from "/assets/js/tools/url_encode_decode.js?v=1.6.26";
+
+      initLayout();
+      initUrlEncodeDecode();
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

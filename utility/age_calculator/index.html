@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW 年齡計算器</title>
+    <meta name="description" content="Calculate exact age in years, months, days, and total day/week metrics." />
+    <meta name="keywords" content="age calculator,birthday calculator,years months days" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>年齡計算器</h1>
+          <p class="lead">輸入生日與目標日期，快速計算精確年齡。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="row">
+            <div class="field">
+              <label for="age-birth">生日</label>
+              <input id="age-birth" type="date" />
+            </div>
+            <div class="field">
+              <label for="age-target">目標日期</label>
+              <input id="age-target" type="date" />
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="actions">
+            <button id="age-calc-btn" class="btn btn-primary" type="button">計算年齡</button>
+            <button id="age-today-btn" class="btn" type="button">設為今天</button>
+            <button id="age-sample-btn" class="btn" type="button">載入範例</button>
+            <button id="age-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="field">
+            <label for="age-output">計算結果</label>
+            <textarea id="age-output" readonly placeholder="計算結果會顯示在這裡"></textarea>
+          </div>
+          <div class="actions">
+            <button id="age-copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 輸入生日與目標日期。</p>
+          <p>2. 點擊計算年齡。</p>
+          <p>3. 查看年/月/日與總天數資訊。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>可算未來日期嗎？</strong> 可以，目標日期可自訂。</p>
+          <p><strong>資料會上傳嗎？</strong> 不會，全部在本機瀏覽器完成。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initAgeCalculator from "/assets/js/tools/age_calculator.js?v=1.6.26";
+
+      initLayout();
+      initAgeCalculator();
+    </script>
+  </body>
+</html>
+
+

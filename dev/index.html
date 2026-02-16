@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW 開發工具</title>
+    <meta
+      name="description"
+      content="Browse developer tools including regex tester, color converter, JWT decoder, cron parser, UUID, hash, URL, and Base64 utilities."
+    />
+    <meta
+      name="keywords"
+      content="dev tools,regex tester,color converter,jwt decoder,cron parser,url encoder,base64,uuid generator,hash generator"
+    />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body data-category="dev">
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <section class="hero">
+        <h1 id="category-title">開發工具</h1>
+        <p id="category-description">開發常用工具</p>
+      </section>
+
+      <section class="panel">
+        <h2 id="category-filter-title">篩選工具</h2>
+        <div class="field">
+          <label id="category-search-label" for="category-search">依名稱或關鍵字搜尋</label>
+          <input id="category-search" type="search" placeholder="例如：regex、色彩、UUID" />
+        </div>
+        <div id="category-tool-list" class="tool-grid" aria-live="polite"></div>
+      </section>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initCategoryPage from "/assets/js/category.js?v=1.6.26";
+
+      initLayout();
+      initCategoryPage();
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

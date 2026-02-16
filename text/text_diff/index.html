@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW 文字差異比對</title>
+    <meta name="description" content="Compare two text blocks and check line-by-line differences quickly." />
+    <meta name="keywords" content="text diff checker,line compare,text compare" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>文字差異比對</h1>
+          <p class="lead">逐行比較兩段文字內容，快速找出新增與刪除項目。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="row">
+            <div class="field">
+              <label for="diff-left">文字 A</label>
+              <textarea id="diff-left" placeholder="貼上第一段文字"></textarea>
+            </div>
+            <div class="field">
+              <label for="diff-right">文字 B</label>
+              <textarea id="diff-right" placeholder="貼上第二段文字"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="field">
+            <label id="diff-option-label">比對選項</label>
+            <div class="chip-row">
+              <label><input id="diff-ignore-punc" type="checkbox" checked /> <span id="diff-ignore-punc-text">忽略標點</span></label>
+              <label><input id="diff-ignore-space" type="checkbox" checked /> <span id="diff-ignore-space-text">忽略空白</span></label>
+              <label><input id="diff-ignore-empty" type="checkbox" checked /> <span id="diff-ignore-empty-text">忽略空行</span></label>
+            </div>
+          </div>
+          <div class="actions">
+            <button id="diff-compare-btn" class="btn btn-primary" type="button">開始比對</button>
+            <button id="diff-swap-btn" class="btn" type="button">交換 A / B</button>
+            <button id="diff-sample-btn" class="btn" type="button">載入範例</button>
+            <button id="diff-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="field">
+            <label for="diff-output">差異結果</label>
+            <div id="diff-output" class="diff-output" role="status" aria-live="polite"></div>
+          </div>
+          <div class="actions">
+            <button id="diff-copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 分別貼上文字 A 與文字 B。</p>
+          <p>2. 點擊開始比對。</p>
+          <p>3. 查看 + / - 標記並複製結果。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>支援長文嗎？</strong> 支援，但過長文字建議分段比對。</p>
+          <p><strong>是否上傳文字？</strong> 不會，運算在本機瀏覽器完成。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initTextDiff from "/assets/js/tools/text_diff.js?v=1.6.26";
+
+      initLayout();
+      initTextDiff();
+    </script>
+  </body>
+</html>
+
+
+
+

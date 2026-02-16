@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW Slug 產生器</title>
+    <meta name="description" content="Generate SEO-friendly URL slugs from any title or text content." />
+    <meta name="keywords" content="slug generator,url slug,seo url text" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>Slug 產生器</h1>
+          <p class="lead">將標題文字轉換成 SEO 友善網址片段。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="field">
+            <label for="slug-input">原始文字</label>
+            <textarea id="slug-input" placeholder="例如：ToolNestTW 工具平台 第二階段上線"></textarea>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="row">
+            <div class="field">
+              <label for="slug-separator">分隔符號</label>
+              <select id="slug-separator">
+                <option value="-">-</option>
+                <option value="_">_</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="slug-lowercase">
+                <input id="slug-lowercase" type="checkbox" checked />
+                <span id="slug-lowercase-text">轉為小寫</span>
+              </label>
+            </div>
+          </div>
+          <div class="actions">
+            <button id="slug-generate-btn" class="btn btn-primary" type="button">產生 Slug</button>
+            <button id="slug-sample-btn" class="btn" type="button">載入範例</button>
+            <button id="slug-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="field">
+            <label for="slug-output">Slug 結果</label>
+            <textarea id="slug-output" readonly placeholder="Slug 會顯示在這裡"></textarea>
+          </div>
+          <div class="actions">
+            <button id="slug-copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 輸入標題或文字。</p>
+          <p>2. 設定分隔符號與大小寫。</p>
+          <p>3. 產生後複製網址片段。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>會移除特殊符號嗎？</strong> 會，僅保留 URL 安全字元。</p>
+          <p><strong>是否會上傳資料？</strong> 不會，轉換在本機執行。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initSlugGenerator from "/assets/js/tools/slug_generator.js?v=1.6.26";
+
+      initLayout();
+      initSlugGenerator();
+    </script>
+  </body>
+</html>
+
+
+
+
+

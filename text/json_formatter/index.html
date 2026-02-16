@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW JSON 格式化</title>
+    <meta name="description" content="Format and beautify JSON instantly with copy-ready output." />
+    <meta name="keywords" content="json formatter,json beautifier,json pretty print" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>JSON 格式化</h1>
+          <p class="lead">貼上 JSON 後可快速格式化並複製結果。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="field">
+            <label for="json-input">JSON 字串</label>
+            <textarea
+              id="json-input"
+              placeholder='Example: {"name":"ToolNestTW","features":["json","format"]}'
+            ></textarea>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="actions">
+            <button id="format-btn" class="btn btn-primary" type="button">格式化 JSON</button>
+            <button id="minify-btn" class="btn" type="button">壓縮 JSON</button>
+            <button id="sample-btn" class="btn" type="button">載入範例</button>
+            <button id="clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="field">
+            <label for="json-output">格式化結果</label>
+            <textarea id="json-output" readonly placeholder="結果會顯示在這裡"></textarea>
+          </div>
+          <div class="actions">
+            <button id="copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 在輸入區貼上 JSON。</p>
+          <p>2. 選擇格式化 JSON 或壓縮 JSON。</p>
+          <p>3. 確認結果後按複製。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>為什麼格式化失敗？</strong> 輸入內容不是有效的 JSON。</p>
+          <p><strong>資料會上傳嗎？</strong> 不會，所有處理都在瀏覽器本機完成。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initJsonFormatter from "/assets/js/tools/json_formatter.js?v=1.6.26";
+
+      initLayout();
+      initJsonFormatter();
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

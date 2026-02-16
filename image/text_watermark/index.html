@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW 圖片文字浮水印</title>
+    <meta name="description" content="Add text watermark to images with font size, opacity, and rotation controls." />
+    <meta name="keywords" content="image watermark,text watermark,watermark image,batch watermark" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>圖片文字浮水印</h1>
+          <p class="lead">上傳圖片後加入文字浮水印，支援單張即時預覽與批量轉換。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div id="watermark-drop-zone" class="drop-zone">
+            <strong>拖曳圖片到這裡（支援單檔/批量）</strong>
+            <p class="hint">或手動選擇一張或多張圖片</p>
+            <input id="watermark-file" type="file" accept="image/*" multiple />
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="field">
+            <label for="watermark-text">浮水印文字</label>
+            <input id="watermark-text" type="text" value="ToolNestTW" placeholder="輸入浮水印文字" />
+          </div>
+
+          <div class="field">
+            <label for="watermark-color">浮水印顏色</label>
+            <input id="watermark-color" type="color" value="#ffffff" />
+          </div>
+
+          <div class="row">
+            <div class="field range-field">
+              <div class="range-head">
+                <label for="watermark-font-size">字體大小</label>
+                <span id="watermark-font-size-text" class="range-value">64 px</span>
+              </div>
+              <input id="watermark-font-size" type="range" min="16" max="200" step="1" value="64" />
+            </div>
+            <div class="field range-field">
+              <div class="range-head">
+                <label for="watermark-opacity">透明度</label>
+                <span id="watermark-opacity-text" class="range-value">30%</span>
+              </div>
+              <input id="watermark-opacity" type="range" min="5" max="100" step="1" value="30" />
+            </div>
+          </div>
+
+          <div class="field range-field">
+            <div class="range-head">
+              <label for="watermark-angle">文字旋轉角度</label>
+              <span id="watermark-angle-text" class="range-value">-30°</span>
+            </div>
+            <input id="watermark-angle" type="range" min="-180" max="180" step="1" value="-30" />
+          </div>
+
+          <div class="field range-field">
+            <div class="range-head">
+              <label for="watermark-spacing">文字間距</label>
+              <span id="watermark-spacing-text" class="range-value">180%</span>
+            </div>
+            <input id="watermark-spacing" type="range" min="80" max="360" step="5" value="180" />
+          </div>
+
+          <div class="field">
+            <label for="watermark-format">輸出圖片格式</label>
+            <select id="watermark-format">
+              <option value="jpg" selected>JPG</option>
+              <option value="png">PNG</option>
+              <option value="webp">WEBP</option>
+            </select>
+          </div>
+
+          <div class="actions">
+            <button id="watermark-batch-btn" class="btn btn-primary" type="button">一鍵批量轉換</button>
+            <button id="watermark-sample-btn" class="btn" type="button">載入範例圖片</button>
+            <button id="watermark-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="batch-gallery">
+            <section class="gallery-panel">
+              <h3 id="watermark-input-gallery-title">輸入縮圖</h3>
+              <div id="watermark-input-gallery" class="thumb-grid"></div>
+            </section>
+            <section class="gallery-panel">
+              <h3 id="watermark-output-gallery-title">輸出縮圖</h3>
+              <div id="watermark-output-gallery" class="thumb-grid"></div>
+            </section>
+          </div>
+          <p id="watermark-gallery-hint" class="hint">單張時會隨參數變更即時更新，點擊縮圖可放大檢視。</p>
+          <div id="watermark-meta" class="kv"></div>
+          <div class="actions">
+            <button id="watermark-download-btn" class="btn" type="button" disabled>下載圖片 / ZIP</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 上傳圖片，單檔或批量皆可。</p>
+          <p>2. 設定浮水印文字、顏色、字體大小、透明度、旋轉角度與文字間距。</p>
+          <p>3. 選擇輸出格式（JPG/PNG/WEBP）；單張會即時預覽，批量請點一鍵批量轉換，單張下載圖片、批量下載 ZIP。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>會上傳圖片嗎？</strong> 不會，全部在瀏覽器本地運算。</p>
+          <p><strong>浮水印位置固定嗎？</strong> 預設置中，可透過旋轉角度調整視覺效果。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initImageTextWatermark from "/assets/js/tools/image_text_watermark.js?v=1.6.26";
+
+      initLayout();
+      initImageTextWatermark();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW 單位換算系統</title>
+    <meta name="description" content="ToolNestTW Unit Converter with standalone tools for network, engineering, finance, health, developer, and more." />
+    <meta name="keywords" content="unit converter,engineering converter,finance calculator,network calculator" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1 id="uci-title">單位換算系統</h1>
+          <p id="uci-lead" class="lead">專業級實用工具集合。每個工具皆為獨立應用、即時輸出、可離線使用。</p>
+        </section>
+
+        <section class="panel">
+          <h2 id="uci-category-title">工具分類</h2>
+          <p id="uci-category-desc" class="hint">依領域挑選工具，不需切換到其他系統。</p>
+          <div id="uci-category-list" class="tool-grid"></div>
+        </section>
+
+        <section class="panel">
+          <h2 id="uci-faq-title">常見問題</h2>
+          <p id="uci-faq-1">需要後端或 API 嗎？不需要，全部在瀏覽器本地運算。</p>
+          <p id="uci-faq-2">會儲存敏感資料嗎？不會，工具不保存任何機密內容。</p>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initUnitConverterIndexPage from "/assets/js/tools/unit_converter_index.js?v=1.6.26";
+
+      initLayout();
+      initUnitConverterIndexPage();
+    </script>
+  </body>
+</html>
+

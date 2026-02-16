@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW Cron Parser</title>
+    <meta
+      name="description"
+      content="Parse cron, generate clear human description, and preview next run times."
+    />
+    <meta
+      name="keywords"
+      content="cron parser,cron to human,schedule,next runs,linux cron,quartz cron"
+    />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>Cron Parser</h1>
+          <p class="lead">
+            將 Cron 轉為易懂語句，並用常見規則快速產生 Cron。
+          </p>
+        </section>
+
+        <section class="panel">
+          <h2 id="cron-mode-title">Cron 語法模式</h2>
+          <div class="field">
+            <label for="cron-syntax-mode" id="cron-syntax-label">Cron 語法模式</label>
+            <select id="cron-syntax-mode">
+              <option value="linux">Linux (5 fields)</option>
+              <option value="quartz">Quartz (6/7 fields)</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2 id="cron-preset-title">常見規則</h2>
+          <p class="hint" id="cron-preset-hint">點一下按鈕可鎖定規則，再點一次解除鎖定。</p>
+          <div class="actions">
+            <button id="cron-preset-daily" class="btn" type="button">每天 09:00</button>
+            <button id="cron-preset-30m" class="btn" type="button">每 30 分鐘</button>
+            <button id="cron-preset-4h" class="btn" type="button">每 4 小時</button>
+            <button id="cron-preset-weekdays" class="btn" type="button">每週一到週五 07:00</button>
+            <button id="cron-preset-monthly" class="btn" type="button">每月 1 日 08:00</button>
+          </div>
+          <div id="cron-preset-config" class="field" hidden>
+            <label id="cron-preset-config-title" for="cron-preset-a">規則參數</label>
+            <div class="row">
+              <div class="field">
+                <label id="cron-preset-a-label" for="cron-preset-a">參數 1</label>
+                <input id="cron-preset-a" type="text" />
+              </div>
+              <div id="cron-preset-b-field" class="field" hidden>
+                <label id="cron-preset-b-label" for="cron-preset-b">參數 2</label>
+                <input id="cron-preset-b" type="text" />
+              </div>
+            </div>
+            <p class="hint" id="cron-preset-config-hint">變更參數後會即時更新 Cron。</p>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2 id="cron-expression-title">Cron 表達式</h2>
+          <div class="field">
+            <label for="cron-expression" id="cron-expression-label">Cron 表達式</label>
+            <input id="cron-expression" type="text" placeholder="例如：0 9 * * *" />
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2 id="cron-output-title">輸出</h2>
+          <p id="cron-validation-status" class="hint">validation status: -</p>
+          <div class="field">
+            <label for="cron-description-output" id="cron-description-label">human description</label>
+            <textarea id="cron-description-output" readonly></textarea>
+          </div>
+          <div class="field">
+            <label for="cron-next-output" id="cron-next-label">next runs</label>
+            <textarea id="cron-next-output" readonly></textarea>
+          </div>
+          <div class="actions">
+            <button id="cron-copy-btn" class="btn" type="button">複製輸出</button>
+            <button id="cron-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2 id="cron-how-title">使用方式</h2>
+          <p id="cron-how-1">1. 先選 Cron 語法模式。</p>
+          <p id="cron-how-2">2. 可直接輸入 Cron，或使用常見規則。</p>
+          <p id="cron-how-3">3. 系統會即時顯示語句與固定 5 筆執行時間。</p>
+        </section>
+
+        <section class="panel">
+          <h2 id="cron-faq-title">常見問題</h2>
+          <p id="cron-faq-1"><strong>支援哪些符號？</strong> 支援 `*`、`,`、`-`、`/`，Quartz 額外支援 `?`。</p>
+          <p id="cron-faq-2"><strong>資料會外傳嗎？</strong> 不會，全部在瀏覽器本地運算。</p>
+        </section>
+
+        <section class="panel">
+          <h2 id="cron-recommend-title">推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script src="/assets/js/vendor/cronstrue.min.js?v=1.6.26"></script>
+    <script src="/assets/js/vendor/cronstrue-locale-zh_TW.min.js?v=1.6.26"></script>
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initCronParser from "/assets/js/tools/cron_parser.js?v=1.6.26";
+
+      initLayout();
+      initCronParser();
+    </script>
+  </body>
+</html>

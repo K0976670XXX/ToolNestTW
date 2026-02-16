@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW 圖片壓縮</title>
+    <meta name="description" content="Compress image file size with quality and format controls." />
+    <meta name="keywords" content="image compress,photo compressor,reduce image size" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>圖片壓縮</h1>
+          <p class="lead">透過品質與格式設定壓縮圖片大小。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div id="compress-drop-zone" class="drop-zone">
+            <strong>拖曳圖片到這裡（支援單檔/批量）</strong>
+            <p class="hint">或手動選擇一張或多張圖片</p>
+            <input id="compress-file" type="file" accept="image/*" multiple />
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="row">
+            <div class="field">
+              <label for="compress-quality">品質 (10 - 100)</label>
+              <input id="compress-quality" type="range" min="10" max="100" value="80" />
+              <p id="compress-quality-text" class="hint">80%</p>
+            </div>
+            <div class="field">
+              <label for="compress-format">輸出格式</label>
+              <select id="compress-format">
+                <option value="image/jpeg">JPEG</option>
+                <option value="image/webp">WEBP</option>
+                <option value="image/png">PNG</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="compress-btn" class="btn btn-primary" type="button">壓縮圖片</button>
+            <button id="compress-sample-btn" class="btn" type="button">載入範例圖片</button>
+            <button id="compress-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="batch-gallery">
+            <section class="gallery-panel">
+              <h3 id="compress-input-gallery-title">輸入縮圖</h3>
+              <div id="compress-input-gallery" class="thumb-grid"></div>
+            </section>
+            <section class="gallery-panel">
+              <h3 id="compress-output-gallery-title">輸出縮圖</h3>
+              <div id="compress-output-gallery" class="thumb-grid"></div>
+            </section>
+          </div>
+          <p id="compress-gallery-hint" class="hint">點擊縮圖可放大檢視。</p>
+          <div id="compress-meta" class="kv"></div>
+          <div class="actions">
+            <button id="compress-download-btn" class="btn" type="button" disabled>下載 PNG / ZIP</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 上傳圖片，可單檔或批量。</p>
+          <p>2. 調整品質與輸出格式。</p>
+          <p>3. 點擊壓縮後，單檔下載為 PNG，批量下載為 ZIP。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>會改變尺寸嗎？</strong> 不會，會維持原始寬高。</p>
+          <p><strong>PNG 受品質滑桿影響嗎？</strong> PNG 為無損格式，影響相對有限。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initImageCompress from "/assets/js/tools/image_compress.js?v=1.6.26";
+
+      initLayout();
+      initImageCompress();
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

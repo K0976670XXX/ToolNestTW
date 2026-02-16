@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW Gemini 浮水印移除</title>
+    <meta
+      name="description"
+      content="Remove Gemini image watermark area in browser based on known overlay patterns."
+    />
+    <meta
+      name="keywords"
+      content="gemini watermark remover,image watermark remove,remove gemini watermark"
+    />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>Gemini 浮水印移除</h1>
+          <p class="lead">使用已知樣板在本機端修復右下角 Gemini 浮水印區塊。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div id="gemini-drop-zone" class="drop-zone">
+            <strong>拖曳圖片到這裡（支援單檔/批量）</strong>
+            <p class="hint">或手動選擇一張或多張圖片</p>
+            <input id="gemini-file" type="file" accept="image/*" multiple />
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="actions">
+            <button id="gemini-remove-btn" class="btn btn-primary" type="button">移除浮水印</button>
+            <button id="gemini-sample-btn" class="btn" type="button">載入範例</button>
+            <button id="gemini-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="batch-gallery">
+            <section class="gallery-panel">
+              <h3 id="gemini-input-gallery-title">輸入縮圖</h3>
+              <div id="gemini-input-gallery" class="thumb-grid"></div>
+            </section>
+            <section class="gallery-panel">
+              <h3 id="gemini-output-gallery-title">輸出縮圖</h3>
+              <div id="gemini-output-gallery" class="thumb-grid"></div>
+            </section>
+          </div>
+          <p id="gemini-gallery-hint" class="hint">點擊縮圖可放大檢視。</p>
+          <div id="gemini-meta" class="kv"></div>
+          <div class="actions">
+            <button id="gemini-download-btn" class="btn" type="button" disabled>下載 PNG / ZIP</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 上傳含 Gemini 浮水印的圖片，可單檔或批量。</p>
+          <p>2. 點擊移除浮水印。</p>
+          <p>3. 檢查結果後下載，單檔為 PNG、批量為 ZIP。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>會上傳圖片嗎？</strong> 不會，所有處理都在瀏覽器本機執行。</p>
+          <p><strong>適用哪些圖？</strong> 依 Gemini 既定浮水印位置與樣式設計。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.5.3";
+      import initRemoveGeminiWatermark from "/assets/js/tools/remove_gemini_watermark.js?v=1.5.3";
+
+      initLayout();
+      initRemoveGeminiWatermark();
+    </script>
+  </body>
+</html>
+

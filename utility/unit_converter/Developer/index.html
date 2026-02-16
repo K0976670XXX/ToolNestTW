@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW Developer 類</title>
+    <meta name="description" content="Developer length and size tools." />
+    <meta name="keywords" content="unit converter,developer,tools" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body data-unit-category="Developer">
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <section class="hero">
+        <h1 id="ucc-title">Developer 類</h1>
+        <p id="ucc-lead">開發常見長度與大小工具。</p>
+      </section>
+
+      <section class="panel">
+        <h2 id="ucc-filter-title">篩選工具</h2>
+        <div class="field">
+          <label id="ucc-filter-label" for="ucc-search">依名稱或說明搜尋</label>
+          <input id="ucc-search" type="search" placeholder="輸入關鍵字" />
+        </div>
+        <div id="ucc-list" class="tool-grid" aria-live="polite"></div>
+      </section>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initUnitConverterCategoryPage from "/assets/js/tools/unit_converter_category.js?v=1.6.26";
+
+      initLayout();
+      initUnitConverterCategoryPage();
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW JWT Decoder</title>
+    <meta name="description" content="Decode JWT header and payload safely in browser without sending data." />
+    <meta name="keywords" content="jwt decoder,jwt parser,json web token decode" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>JWT Decoder</h1>
+          <p class="lead">解析 JWT 的 Header 與 Payload，並顯示常見時間欄位狀態。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="field">
+            <label for="jwt-input">JWT Token</label>
+            <textarea id="jwt-input" placeholder="貼上 JWT（header.payload.signature）"></textarea>
+          </div>
+          <p class="hint">安全提醒：本工具不會儲存或傳送您的 Token。</p>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="actions">
+            <button id="jwt-decode-btn" class="btn btn-primary" type="button">解析 JWT</button>
+            <button id="jwt-sample-btn" class="btn" type="button">載入範例</button>
+            <button id="jwt-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="field">
+            <label for="jwt-output">解析結果</label>
+            <textarea id="jwt-output" readonly placeholder="解析結果會顯示在這裡"></textarea>
+          </div>
+          <div class="actions">
+            <button id="jwt-copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 貼上 JWT Token。</p>
+          <p>2. 點擊解析 JWT。</p>
+          <p>3. 檢視 Header、Payload 與時間欄位資訊。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>會驗證簽章嗎？</strong> 不會，本工具只負責解碼顯示。</p>
+          <p><strong>資料會外傳嗎？</strong> 不會，所有運算都在瀏覽器本機完成。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initJwtDecoder from "/assets/js/tools/jwt_decoder.js?v=1.6.26";
+
+      initLayout();
+      initJwtDecoder();
+    </script>
+  </body>
+</html>

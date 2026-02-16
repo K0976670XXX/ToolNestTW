@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW 貸款月付金</title>
+    <meta name="description" content="Estimate monthly payment for a loan." />
+    <meta name="keywords" content="unit converter,loan-payment,finance" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1 id="uc-title">貸款月付金</h1>
+          <p id="uc-lead" class="lead">依本金、利率、期數計算月付金。</p>
+        </section>
+
+        <section class="panel">
+          <h2 id="uc-input-title">輸入</h2>
+          <div id="uc-inputs"></div>
+        </section>
+
+        <section class="panel">
+          <h2 id="uc-output-title">輸出</h2>
+          <p id="uc-error" class="hint" hidden></p>
+          <div id="uc-output"></div>
+          <div class="actions">
+            <button id="uc-copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2 id="uc-how-title">使用方式</h2>
+          <p id="uc-how-text">輸入欄位後即時輸出結果，無需點擊計算按鈕。</p>
+        </section>
+
+        <section class="panel">
+          <h2 id="uc-faq-title">常見問題</h2>
+          <p id="uc-faq-1">資料會上傳嗎？不會，全部在本機完成。</p>
+          <p id="uc-faq-2">精度規則：一般 4 位、工程 6 位、金融 2 位小數。</p>
+        </section>
+
+        <section class="panel">
+          <h2 id="uc-recommended-title">同類工具</h2>
+          <ul id="uc-recommended-list" class="link-list"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initUnitConverterToolPage from "/assets/js/tools/unit_converter_runtime.js?v=1.6.26";
+
+      initLayout();
+      initUnitConverterToolPage();
+    </script>
+  </body>
+</html>
+

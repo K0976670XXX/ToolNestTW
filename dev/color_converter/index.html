@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW 色彩轉換器</title>
+    <meta name="description" content="Convert color values between HEX, RGB, and HSL formats instantly." />
+    <meta name="keywords" content="color converter,hex rgb hsl,color picker" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>色彩轉換器</h1>
+          <p class="lead">在 HEX、RGB、HSL 之間快速轉換色彩格式。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="row">
+            <div class="field">
+              <label for="color-input">顏色值</label>
+              <input id="color-input" type="text" placeholder="例如：#1a73e8 或 rgb(26,115,232)" />
+            </div>
+            <div class="field">
+              <label for="color-picker">顏色挑選器</label>
+              <input id="color-picker" type="color" value="#1a73e8" />
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="actions">
+            <button id="color-sample-btn" class="btn" type="button">載入範例</button>
+            <button id="color-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="field">
+            <label for="color-output">轉換結果</label>
+            <textarea id="color-output" readonly placeholder="轉換結果會顯示在這裡"></textarea>
+          </div>
+          <div class="preview-box">
+            <p><strong id="color-preview-title">預覽色塊</strong></p>
+            <div id="color-preview-block" style="height:88px;border-radius:10px;border:1px solid var(--border)"></div>
+          </div>
+          <div class="actions">
+            <button id="color-copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 輸入顏色值或使用顏色挑選器。</p>
+          <p>2. 輸入有變化時會即時轉換。</p>
+          <p>3. 取得 HEX、RGB、HSL 並複製。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>支援哪些格式？</strong> 支援瀏覽器可辨識的常見色彩格式。</p>
+          <p><strong>資料會離開瀏覽器嗎？</strong> 不會，全部在本機處理。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initColorConverter from "/assets/js/tools/color_converter.js?v=1.6.26";
+
+      initLayout();
+      initColorConverter();
+    </script>
+  </body>
+</html>
+
+
+
+

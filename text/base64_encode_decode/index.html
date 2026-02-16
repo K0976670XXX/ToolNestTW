@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW Base64 編碼解碼</title>
+    <meta name="description" content="Encode or decode UTF-8 text with Base64 in one click." />
+    <meta name="keywords" content="base64 encoder,base64 decoder,utf8 base64" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>Base64 編碼解碼</h1>
+          <p class="lead">將 UTF-8 文字轉為 Base64，或將 Base64 還原成文字。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="field">
+            <label for="base64-input">文字或 Base64</label>
+            <textarea id="base64-input" placeholder="例如：Hello World"></textarea>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="actions">
+            <button id="encode-btn" class="btn btn-primary" type="button">編碼</button>
+            <button id="decode-btn" class="btn" type="button">解碼</button>
+            <button id="sample-btn" class="btn" type="button">載入範例</button>
+            <button id="clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="field">
+            <label for="base64-output">轉換結果</label>
+            <textarea id="base64-output" readonly placeholder="結果會顯示在這裡"></textarea>
+          </div>
+          <div class="actions">
+            <button id="copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 輸入一般文字或 Base64 內容。</p>
+          <p>2. 選擇編碼或解碼。</p>
+          <p>3. 複製結果並貼到目標位置。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>支援 UTF-8 嗎？</strong> 支援，Unicode 文字可正常處理。</p>
+          <p><strong>解碼失敗？</strong> 可能不是有效的 Base64。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initBase64Tool from "/assets/js/tools/base64_encode_decode.js?v=1.6.26";
+
+      initLayout();
+      initBase64Tool();
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
