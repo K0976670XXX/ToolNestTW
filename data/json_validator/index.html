@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW JSON 驗證器</title>
+    <meta name="description" content="Validate JSON syntax and show parse errors with formatted output." />
+    <meta name="keywords" content="json validator,json lint,json syntax checker" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>JSON 驗證器</h1>
+          <p class="lead">檢查 JSON 是否合法，並顯示格式化結果或錯誤資訊。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="field">
+            <label for="jsonv-input">JSON 內容</label>
+            <textarea id="jsonv-input" placeholder='例如：{"name":"ToolNestTW","ok":true}'></textarea>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="actions">
+            <button id="jsonv-validate-btn" class="btn btn-primary" type="button">驗證 JSON</button>
+            <button id="jsonv-sample-btn" class="btn" type="button">載入範例</button>
+            <button id="jsonv-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="field">
+            <label for="jsonv-output">驗證結果</label>
+            <textarea id="jsonv-output" readonly placeholder="驗證結果會顯示在這裡"></textarea>
+          </div>
+          <div id="jsonv-error-wrap" class="json-error-wrap" hidden>
+            <p id="jsonv-error-line-title" class="json-error-title">錯誤行預覽</p>
+            <div id="jsonv-error-preview" class="json-error-preview" role="status" aria-live="polite"></div>
+          </div>
+          <div class="actions">
+            <button id="jsonv-copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 貼上 JSON 內容。</p>
+          <p>2. 點擊驗證 JSON。</p>
+          <p>3. 查看成功或錯誤訊息並複製結果。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>會自動修正 JSON 嗎？</strong> 不會，只做驗證與格式化。</p>
+          <p><strong>是否上傳內容？</strong> 不會，全部在本機處理。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initJsonValidator from "/assets/js/tools/json_validator.js?v=1.6.26";
+
+      initLayout();
+      initJsonValidator();
+    </script>
+  </body>
+</html>
+
+
+
+
+

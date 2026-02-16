@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW JSON Tree Viewer</title>
+    <meta name="description" content="Visualize JSON as an expandable tree with object and array nodes." />
+    <meta name="keywords" content="json tree viewer,json visualizer,json parser" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>JSON Tree Viewer</h1>
+          <p class="lead">將 JSON 內容解析為可展開樹狀結構，方便逐層檢視。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="field">
+            <label for="jtv-input">JSON 內容</label>
+            <textarea id="jtv-input" placeholder='例如：{"project":"ToolNestTW","items":[1,2,3]}'></textarea>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="actions">
+            <button id="jtv-parse-btn" class="btn btn-primary" type="button">解析 Tree</button>
+            <button id="jtv-expand-btn" class="btn" type="button">全部展開</button>
+            <button id="jtv-collapse-btn" class="btn" type="button">全部收合</button>
+            <button id="jtv-sample-btn" class="btn" type="button">載入範例</button>
+            <button id="jtv-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="actions">
+            <button id="jtv-mode-tree" class="btn btn-primary" type="button">清單模式</button>
+            <button id="jtv-mode-graph" class="btn" type="button">圖形模式</button>
+          </div>
+          <div id="jtv-graph-controls" class="graph-control-row" hidden>
+            <label id="jtv-zoom-label" for="jtv-zoom-range">縮放</label>
+            <button id="jtv-zoom-out" class="btn graph-zoom-btn" type="button" aria-label="Zoom out">-</button>
+            <input id="jtv-zoom-range" type="range" min="40" max="220" step="5" value="100" />
+            <button id="jtv-zoom-in" class="btn graph-zoom-btn" type="button" aria-label="Zoom in">+</button>
+            <button id="jtv-zoom-reset" class="btn graph-zoom-btn" type="button">100%</button>
+            <span id="jtv-zoom-value" class="hint">100%</span>
+          </div>
+          <p id="jtv-status" class="hint"></p>
+          <div id="jtv-tree" class="tree-view-container" role="status" aria-live="polite"></div>
+          <div id="jtv-graph" class="json-graph-wrap" role="status" aria-live="polite" hidden>
+            <div id="jtv-graph-inner" class="json-graph-inner"></div>
+          </div>
+          <div class="actions">
+            <button id="jtv-copy-btn" class="btn" type="button">複製格式化 JSON</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 貼上 JSON 內容。</p>
+          <p>2. 點擊解析 Tree。</p>
+          <p>3. 可展開/收合節點後複製格式化 JSON。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>解析失敗？</strong> 通常是 JSON 格式不合法（引號、逗號、括號）。</p>
+          <p><strong>會上傳資料嗎？</strong> 不會，全部在瀏覽器本機運算。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initJsonTreeViewer from "/assets/js/tools/json_tree_viewer.js?v=1.6.26";
+
+      initLayout();
+      initJsonTreeViewer();
+    </script>
+  </body>
+</html>

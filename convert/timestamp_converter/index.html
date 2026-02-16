@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW 時間戳轉換</title>
+    <meta name="description" content="Convert Unix timestamp and datetime values in both directions instantly." />
+    <meta name="keywords" content="timestamp converter,unix time converter,datetime converter" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>時間戳轉換</h1>
+          <p class="lead">Unix 秒/毫秒與日期時間雙向轉換。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="row">
+            <div class="field">
+              <label for="ts-input">Unix 時間戳</label>
+              <input id="ts-input" type="text" placeholder="例如：1735689600 或 1735689600000" />
+            </div>
+            <div class="field">
+              <label for="dt-input">日期時間 (本地)</label>
+              <input id="dt-input" type="datetime-local" />
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="actions">
+            <button id="ts-from-unix-btn" class="btn btn-primary" type="button">Unix 轉日期</button>
+            <button id="ts-from-date-btn" class="btn" type="button">日期轉 Unix</button>
+            <button id="ts-now-btn" class="btn" type="button">現在時間</button>
+            <button id="ts-sample-btn" class="btn" type="button">載入範例</button>
+            <button id="ts-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="field">
+            <label for="ts-output">轉換結果</label>
+            <textarea id="ts-output" readonly placeholder="轉換結果會顯示在這裡"></textarea>
+          </div>
+          <div class="actions">
+            <button id="ts-copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 輸入 Unix 時間戳或選擇日期時間。</p>
+          <p>2. 點擊對應轉換按鈕。</p>
+          <p>3. 取得本地時間、UTC 與秒/毫秒結果。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>10 位與 13 位差別？</strong> 10 位為秒，13 位為毫秒。</p>
+          <p><strong>轉換時區是什麼？</strong> 同時提供本地時間與 UTC。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initTimestampConverter from "/assets/js/tools/timestamp_converter.js?v=1.6.26";
+
+      initLayout();
+      initTimestampConverter();
+    </script>
+  </body>
+</html>
+
+
+
+
+

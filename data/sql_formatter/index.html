@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW SQL Formatter</title>
+    <meta name="description" content="Format SQL statements into a cleaner and more readable layout." />
+    <meta name="keywords" content="sql formatter,sql beautifier,sql pretty print" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>SQL Formatter</h1>
+          <p class="lead">將 SQL 指令整理成較易閱讀的排版，方便檢查與分享。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="field">
+            <label for="sqlf-input">SQL 內容</label>
+            <textarea id="sqlf-input" placeholder="例如：select id,name from users where active=1 and role='admin'"></textarea>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="actions">
+            <button id="sqlf-format-btn" class="btn btn-primary" type="button">格式化 SQL</button>
+            <button id="sqlf-sample-btn" class="btn" type="button">載入範例</button>
+            <button id="sqlf-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="field">
+            <label for="sqlf-highlight">格式化結果（高亮）</label>
+            <pre id="sqlf-highlight" class="sql-highlight-output"></pre>
+            <textarea id="sqlf-output" hidden></textarea>
+          </div>
+          <div class="actions">
+            <button id="sqlf-copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 貼上 SQL 內容。</p>
+          <p>2. 點擊格式化 SQL。</p>
+          <p>3. 檢查結果後複製輸出。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>會改變 SQL 語意嗎？</strong> 不會，僅調整排版與關鍵字外觀。</p>
+          <p><strong>會上傳資料嗎？</strong> 不會，全部在瀏覽器本機處理。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initSqlFormatter from "/assets/js/tools/sql_formatter.js?v=1.6.26";
+
+      initLayout();
+      initSqlFormatter();
+    </script>
+  </body>
+</html>
