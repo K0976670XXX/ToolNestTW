@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW 相似圖片整理</title>
+    <meta name="description"
+        content="Find and group similar images using dHash algorithm in the browser without uploading them." />
+    <meta name="keywords" content="image similarity, dhash, group images, remove duplicate, 找相似圖片, 重複圖片, 整理照片" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+
+<body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+        <article class="tool-page">
+            <section class="hero">
+                <h1>相似圖片整理</h1>
+                <p class="lead">純前端運算，在您的瀏覽器中尋找並分類相似的圖片，支援輸出分類腳本或打包下載。</p>
+            </section>
+
+            <section class="panel">
+                <h2>輸入</h2>
+                <div id="similarity-drop-zone" class="drop-zone">
+                    <strong>拖曳圖片或資料夾到這裡（支援多重檔案）</strong>
+                    <p class="hint">或手動選擇多張圖片。所有處理都在本地進行，保護您的隱私。</p>
+                    <input id="similarity-file" type="file" accept="image/*" multiple />
+                </div>
+                <div id="similarity-input-gallery"
+                    style="display: none; max-height: 260px; overflow-y: auto; margin-top: 1rem; flex-wrap: wrap; gap: 8px; border: 1px solid var(--border); padding: 8px; border-radius: 8px; align-content: flex-start;">
+                </div>
+            </section>
+
+            <section class="panel">
+                <h2>操作設定</h2>
+                <div class="row">
+                    <div class="field">
+                        <label for="similarity-threshold">相似度容差值 (0.01 - 0.50)</label>
+                        <input id="similarity-threshold" type="range" min="0.01" max="0.50" step="0.01" value="0.3" />
+                        <p class="hint">目前容差: <span id="similarity-threshold-text">0.3</span> (值越小要求越嚴格)</p>
+                    </div>
+                    <div class="field">
+                        <label for="similarity-mode">整理模式 (.bat 輸出)</label>
+                        <select id="similarity-mode">
+                            <option value="move">移動到資料夾 (Move)</option>
+                            <option value="name">重新命名 (Rename)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button id="similarity-scan-btn" class="btn btn-primary" type="button" disabled>開始掃描</button>
+                    <button id="similarity-clear-btn" class="btn btn-danger" type="button">清除</button>
+                </div>
+
+                <div id="similarity-progress-container" style="display: none; margin-top: 1rem;">
+                    <p id="similarity-progress-text">掃描進度：0 / 0</p>
+                    <progress id="similarity-progress-bar" value="0" max="100" style="width: 100%;"></progress>
+                </div>
+            </section>
+
+            <section class="panel">
+                <h2>輸出結果</h2>
+                <div id="similarity-results-container">
+                    <p class="hint">掃描結果將會顯示在這裡。</p>
+                </div>
+
+                <div class="actions" style="margin-top: 1rem;">
+                    <button id="similarity-download-bat-btn" class="btn btn-primary" type="button" disabled>下載整理腳本
+                        (.bat)</button>
+                    <button id="similarity-download-zip-btn" class="btn" type="button" disabled>下載分類包 (.zip)</button>
+                </div>
+            </section>
+
+            <section class="panel">
+                <h2>使用方式</h2>
+                <p>1. 上傳或拖曳多張圖片進入虛線框。</p>
+                <p>2. 調整「相似度容差值」，預設 0.3 能找出大部分視覺相近的圖片。</p>
+                <p>3. 點擊「開始掃描」進行特徵交叉比對。</p>
+                <p>4. 掃描完成後，您可以預覽相似群組，並選擇下載 <strong>.bat 腳本</strong>（用於在本地快速移動或命名檔案），或直接下載分類好的 <strong>.zip 包</strong>。
+                </p>
+
+                <div style="margin-top: 2rem;">
+                    <h3>.bat 腳本使用教學</h3>
+                    <p>下載 .bat 腳本後，請將該檔案移動到您原始圖片所在的資料夾中，然後點擊執行即可。以下為兩種模式的執行示範：</p>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+                        <div
+                            style="flex: 1; min-width: 300px; border: 1px solid var(--border); padding: 1rem; border-radius: 8px;">
+                            <h4 style="margin-top: 0;">移動模式 (Move)</h4>
+                            <video src="/assets/video/image_similarity/move.mp4" controls
+                                style="width: 100%; border-radius: 4px;"></video>
+                        </div>
+                        <div
+                            style="flex: 1; min-width: 300px; border: 1px solid var(--border); padding: 1rem; border-radius: 8px;">
+                            <h4 style="margin-top: 0;">重新命名模式 (Rename)</h4>
+                            <video src="/assets/video/image_similarity/name.mp4" controls
+                                style="width: 100%; border-radius: 4px;"></video>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel">
+                <h2>常見問題</h2>
+                <p><strong>圖片會上傳到伺服器嗎？</strong> 不會。所有處理都會在您的瀏覽器中本地執行，過程既快速又安全。</p>
+                <p><strong>.bat 腳本怎麼用？</strong> 下載後將它與原始圖片放在同一個資料夾，點擊執行即可自動為您分類/重新命名圖片檔案。</p>
+            </section>
+
+            <section class="panel">
+                <h2>推薦工具</h2>
+                <ul class="link-list" data-layout="recommended"></ul>
+            </section>
+        </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script type="module">
+        import initLayout from "/assets/components/layout.js?v=1.6.26";
+        import initImageSimilarity from "/assets/js/tools/image_similarity.js?v=1.6.26";
+
+        initLayout();
+        initImageSimilarity();
+    </script>
+</body>
+
+</html>

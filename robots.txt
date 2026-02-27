@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://toolnesttw.pages.dev/sitemap.xml
-
+Sitemap: https://toolnesttw.com/sitemap.xml
 

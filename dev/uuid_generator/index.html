@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW UUID 產生器</title>
+    <meta name="description" content="Generate secure UUID v4 values instantly for development workflows." />
+    <meta name="keywords" content="uuid generator,guid,v4 uuid" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>UUID 產生器</h1>
+          <p class="lead">一鍵產生單筆或多筆 UUID v4。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="field">
+            <label for="uuid-count">產生數量</label>
+            <input id="uuid-count" type="number" min="1" max="50" step="1" value="5" />
+            <p class="hint">範圍為 1 到 50，手機與桌機都能快速產生。</p>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="actions">
+            <button id="generate-btn" class="btn btn-primary" type="button">產生 UUID</button>
+            <button id="sample-btn" class="btn" type="button">載入範例</button>
+            <button id="clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="field">
+            <label for="uuid-output">UUID 清單</label>
+            <textarea id="uuid-output" readonly placeholder="UUID 會顯示在這裡"></textarea>
+          </div>
+          <div class="actions">
+            <button id="copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 設定要產生的 UUID 數量。</p>
+          <p>2. 點擊產生 UUID。</p>
+          <p>3. 複製後貼到你的專案。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>使用哪個版本？</strong> 本工具產生 UUID v4。</p>
+          <p><strong>安全嗎？</strong> 使用瀏覽器密碼學等級隨機來源。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initUuidGenerator from "/assets/js/tools/uuid_generator.js?v=1.6.26";
+
+      initLayout();
+      initUuidGenerator();
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

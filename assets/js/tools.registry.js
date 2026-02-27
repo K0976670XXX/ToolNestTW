@@ -261,6 +261,19 @@ export const toolRegistry = [
   },
   {
     name: {
+      en: "Image Similarity Splitter",
+      zh: "相似圖片整理"
+    },
+    path: "/image/image_similarity",
+    category: "image",
+    keywords: ["image", "similarity", "dhash", "find duplicates", "group", "相似", "重複", "整理"],
+    summary: {
+      zh: "純前端快速掃描並群組相似圖片，一鍵匯出腳本或壓縮檔。",
+      en: "Find and group similar images in browser without uploads, export scripts or ZIP."
+    }
+  },
+  {
+    name: {
       en: "QR Code Generator",
       zh: "QR Code 產生器"
     },

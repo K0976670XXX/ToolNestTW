@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW Regex 測試器</title>
+    <meta name="description" content="Test regular expressions against text with match details and groups." />
+    <meta name="keywords" content="regex tester,regexp test,pattern match" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>Regex 測試器</h1>
+          <p class="lead">測試正則表達式並查看每筆匹配位置與群組。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div class="field">
+            <label for="regex-pattern">正則表達式</label>
+            <input id="regex-pattern" type="text" placeholder="例如：\\b(hello)\\b" />
+          </div>
+          <div class="field">
+            <label>旗標</label>
+            <div class="chip-row">
+              <label><input id="flag-g" type="checkbox" checked /> g</label>
+              <label><input id="flag-i" type="checkbox" /> i</label>
+              <label><input id="flag-m" type="checkbox" /> m</label>
+              <label><input id="flag-s" type="checkbox" /> s</label>
+              <label><input id="flag-u" type="checkbox" /> u</label>
+              <label><input id="flag-y" type="checkbox" /> y</label>
+            </div>
+          </div>
+          <div class="field">
+            <label for="regex-input">測試文字</label>
+            <textarea id="regex-input" placeholder="貼上要匹配的文字內容"></textarea>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>操作</h2>
+          <div class="actions">
+            <button id="regex-test-btn" class="btn btn-primary" type="button">開始測試</button>
+            <button id="regex-sample-btn" class="btn" type="button">載入範例</button>
+            <button id="regex-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>輸出</h2>
+          <div class="field">
+            <label for="regex-output">匹配結果</label>
+            <textarea id="regex-output" readonly placeholder="測試結果會顯示在這裡"></textarea>
+          </div>
+          <div class="actions">
+            <button id="regex-copy-btn" class="btn" type="button">複製輸出</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 輸入 Regex 與測試文字。</p>
+          <p>2. 選擇需要的旗標後按開始測試。</p>
+          <p>3. 查看匹配位置與群組後複製結果。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>測試失敗？</strong> Regex 可能語法錯誤或旗標衝突。</p>
+          <p><strong>會上傳資料嗎？</strong> 不會，全部在瀏覽器本機執行。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.26";
+      import initRegexTester from "/assets/js/tools/regex_tester.js?v=1.6.26";
+
+      initLayout();
+      initRegexTester();
+    </script>
+  </body>
+</html>
+
+
+
+
+
