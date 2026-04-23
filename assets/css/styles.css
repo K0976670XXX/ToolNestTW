@@ -1056,6 +1056,53 @@ textarea[readonly] {
   word-break: break-word;
 }
 
+.srt-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.srt-file-meta,
+.srt-shift-preview,
+.srt-output-meta {
+  margin: 0;
+}
+
+.srt-source-text,
+.srt-output-text {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  line-height: 1.55;
+}
+
+.srt-source-text {
+  min-height: 260px;
+}
+
+.srt-output-text {
+  min-height: 300px;
+}
+
+.srt-status {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-soft);
+  color: var(--text-muted);
+}
+
+.srt-status.is-success {
+  border-color: color-mix(in oklab, var(--accent) 42%, var(--border));
+  background: color-mix(in oklab, var(--accent) 10%, var(--surface-soft));
+  color: color-mix(in oklab, var(--accent) 72%, var(--text));
+}
+
+.srt-status.is-warning {
+  border-color: color-mix(in oklab, var(--danger) 30%, var(--border));
+  background: color-mix(in oklab, var(--danger) 9%, var(--surface-soft));
+  color: color-mix(in oklab, var(--danger) 70%, var(--text));
+}
+
 #uc-inputs {
   display: grid;
   gap: 10px;

@@ -1,373 +1,308 @@
 # ToolNestTW Web Tools 平台開發手冊
 
-版本：v1.0
-架構類型：純前端工具平台（Static + Modular JS）
-目標：建立高可擴充、高 SEO、低維護成本的工具站
+版本：v1.1  
+更新日期：2026-04-24  
+架構類型：純前端靜態工具站（Static + Modular JS）
 
 ---
 
-# 1. 專案目標
+# 1. 專案定位
 
-ToolNestTW 是一個多工具集合平台，設計目標：
+這個專案是多工具集合平台，每個工具都必須能單獨開頁、單獨被搜尋、單獨被維護。
 
-* 所有工具皆為**獨立頁面**
-* 不依賴後端即可運作（初期）
-* 可快速新增新工具
-* SEO 友善
-* 模組化架構
+核心原則：
 
----
-
-# 2. 技術棧
-
-| 層級       | 技術                          |
-| -------- | --------------------------- |
-| Frontend | Vanilla JS / TypeScript（可選） |
-| UI       | 原生 CSS / Tailwind（可選）       |
-| 打包       | Vite（建議）                    |
-| 部署       | Cloudflare Pages / Netlify  |
-| 資料儲存     | localStorage                |
+* 每個工具都是獨立頁面
+* 主要邏輯全部在前端完成
+* 不依賴後端 API 才能使用
+* 共用版型與共用元件，降低維護成本
+* 每個工具都要能直接被首頁搜尋、分類頁列出、推薦工具導流
 
 ---
 
-# 3. 專案目錄結構
+# 2. 實際技術組成
+
+| 層級 | 實作方式 |
+| --- | --- |
+| 頁面 | 靜態 HTML |
+| 互動 | Vanilla JS ES Module |
+| 樣式 | `assets/css/styles.css` |
+| 共用框架 | `assets/components/layout.js` |
+| 工具註冊 | `assets/js/tools.registry.js` |
+| i18n | `assets/js/i18n.js` + `assets/js/page_i18n.js` |
+| 本機儲存 | `localStorage` |
+| 部署目標 | 靜態站（目前 sitemap 指向 `toolnesttw.pages.dev`） |
+
+---
+
+# 3. 目錄快速地圖
 
 ```
-/public
 /assets
-    /css
-    /js
-    /components
-/tools
-    /text
-    /image
-    /convert
-    /dev
-    /data
-    /utility
-index.html
-sitemap.xml
-robots.txt
+  /components   共用 UI / layout / copy / download / toast
+  /css          全站樣式
+  /js
+    /tools      每個工具自己的前端邏輯
+    category.js 分類頁渲染
+    main.js     首頁渲染
+    page_i18n.js 工具頁文案綁定
+    tools.registry.js 全站工具清單
+
+/text           文字工具實際頁面
+/dev            開發工具實際頁面
+/image          圖片工具實際頁面
+/data           資料工具實際頁面
+/convert        轉換工具實際頁面
+/utility        其他工具實際頁面
+
+/tools/...      舊網址轉址頁（meta refresh）
+
+/index.html     首頁
+/sitemap.xml    站點清單
+/robots.txt     搜尋引擎規則
 ```
+
+重點：
+
+* 真正工具頁放在 `/分類/工具名/index.html`
+* `/tools/.../*.html` 目前主要是舊路徑 redirect，不是新功能主入口
 
 ---
 
-# 4. URL 規範（強制）
+# 4. 新工具一定要改的地方
 
-所有工具必須符合：
+新增一個工具，最少會動到這些檔案：
 
-```
-/分類/工具名稱
-```
+1. 新增工具頁 HTML  
+   位置：`/分類/工具名/index.html`
 
-範例：
+2. 新增工具邏輯 JS  
+   位置：`/assets/js/tools/工具名.js`
 
-```
-/text/url_encode
-/dev/uuid_generator
-/image/compress
-```
+3. 註冊到工具清單  
+   位置：`/assets/js/tools.registry.js`
 
-命名規則：
+4. 新增舊路徑 redirect  
+   位置：`/tools/分類/工具名.html`
 
-| 規則   | 說明          |
-| ---- | ----------- |
-| 小寫   | 避免 SEO 分裂   |
-| 底線   | 不使用 dash    |
-| 動詞在前 | encode_text |
+通常也要一起更新：
+
+* `sitemap.xml`
+* 分類頁 meta description / keywords
+* 本手冊
 
 ---
 
-# 5. 新工具開發流程（標準 SOP）
+# 5. 工具頁標準結構
 
-新增工具必須遵循以下流程：
+大多數工具頁都遵循這個結構：
 
----
+1. `hero`
+   顯示 H1 與一句 lead。
 
-## Step 1 — 建立頁面
+2. `panel` x N
+   常見順序如下：
 
-```
-/tools/text/url_encode.html
-```
+* 輸入
+* 操作或設定
+* 輸出
+* 使用方式
+* FAQ
+* 推薦工具
 
----
-
-## Step 2 — 套用統一模板
-
-所有頁面都必須使用標準 layout：
-
-```
-<header>
-<h1>
-工具 UI
-結果區
-FAQ
-推薦工具
-<footer>
-```
-
----
-
-## Step 3 — 引入共用元件
+3. 頁尾 script
 
 ```html
 <script type="module">
-import initLayout from "/assets/components/layout.js"
-initLayout()
+  import initLayout from "/assets/components/layout.js?v=1.6.26";
+  import initTool from "/assets/js/tools/your_tool.js?v=1.6.26";
+
+  initLayout();
+  initTool();
 </script>
 ```
 
 ---
 
-## Step 4 — 實作核心邏輯
+# 6. 共用模組怎麼用
 
-只允許寫在：
+常用元件：
 
-```
-/assets/js/tools/
-```
+| 檔案 | 用途 |
+| --- | --- |
+| `assets/components/layout.js` | Header / Footer / 推薦工具 / 最近使用 |
+| `assets/components/toast.js` | 提示訊息 |
+| `assets/components/copy.js` | 複製輸出 |
+| `assets/components/download.js` | 下載 Blob 檔案 |
+| `assets/js/page_i18n.js` | 工具頁 title / 文案 / placeholder 綁定 |
+| `assets/js/utils.js` | `localStorage`、escapeHTML、檔案與格式工具 |
 
-檔名規範：
+實務原則：
 
-```
-url_encode.js
-```
+* 能重用就不要重寫
+* 下載檔案優先走 `downloadBlob`
+* 文案如果是工具頁固定文字，優先放進 `bindPageI18n`
+* 只把少量設定存在 `localStorage`，不要存大型敏感內容
 
 ---
 
-## Step 5 — 註冊工具 metadata
+# 7. 工具註冊機制
 
-新增至：
+全站所有首頁、分類頁、推薦工具，都依賴 `assets/js/tools.registry.js`。
 
-```
-/assets/js/tools.registry.js
-```
-
-格式：
+單筆資料格式：
 
 ```js
 {
- name: "URL Encode",
- path: "/text/url_encode",
- category: "text",
- keywords: ["url", "encode", "decoder"]
+  name: {
+    en: "SRT Range Shift",
+    zh: "SRT 區間平移器"
+  },
+  path: "/data/srt_range_shift",
+  category: "data",
+  keywords: ["srt", "subtitle", "shift"],
+  summary: {
+    zh: "擷取指定字幕區間，並依起始範圍自動平移時間軸。",
+    en: "Filter subtitle cues by range and auto-shift timestamps from the selected start."
+  }
 }
 ```
 
----
+注意：
 
-# 6. 共用元件列表（必須使用）
-
-| 元件          | 功能     |
-| ----------- | ------ |
-| layout.js   | 統一頁面框架 |
-| toast.js    | 提示訊息   |
-| copy.js     | 複製按鈕   |
-| download.js | 下載功能   |
-| drag.js     | 拖曳上傳   |
-| theme.js    | 深色模式   |
+* `path` 必須對應真實頁面路徑
+* `category` 會決定分類頁歸屬與推薦工具優先順序
+* `keywords` 直接影響站內搜尋命中
 
 ---
 
-# 7. UI 統一規範
+# 8. i18n 實作方式
 
-所有工具頁必須一致：
+目前專案是「全站共用字典 + 工具頁局部綁定」的混合做法。
 
-### Input 區
+使用原則：
 
-* textarea 或 file upload
-* placeholder 必須說明格式
-
-### Action 區
-
-* 主按鈕
-* 清除按鈕
-* 範例按鈕
-
-### Output 區
-
-* 結果顯示
-* copy 按鈕
+* 全站共用文案放在 `assets/js/i18n.js`
+* 單一工具自己的標題、段落、placeholder 放在該工具 JS 內，用 `bindPageI18n`
+* 動態訊息（例如處理結果、狀態字串）在工具 JS 內自行用 `t()` 處理
 
 ---
 
-# 8. 性能規範
+# 9. UI 與互動規範
 
-必須遵守：
+新工具至少要有：
 
-* 單頁 JS < 100KB
-* 不允許大型 library
-* 不允許同步 blocking code
+* 明確輸入區
+* 主操作按鈕
+* 清除或重設方式
+* 可讀輸出區
+* 錯誤提示
+* 行動裝置可用
 
----
+建議：
 
-# 9. SEO 規範（強制）
-
-每頁必須包含：
-
-```
-<title>
-<meta description>
-<meta keywords>
-```
-
-H 標籤規範：
-
-```
-H1 = 工具名稱
-H2 = 使用方式
-H2 = FAQ
-```
+* 文字型輸出用 monospace
+* 結果區上方加狀態摘要
+* 需要下載時，同時保留可複製輸出
 
 ---
 
-# 10. 安全規範
+# 10. 安全與實作限制
 
 禁止：
 
-* eval()
-* innerHTML 插入未處理字串
-* 外部 script（未審核）
+* `eval()`
+* 直接把未處理使用者輸入插進 `innerHTML`
+* 依賴未審核第三方遠端 script
 
-所有輸入必須：
+建議：
 
-```
-escapeHTML()
-```
-
----
-
-# 11. localStorage 使用規範
-
-允許用途：
-
-* 最近輸入
-* 最近使用工具
-* 收藏工具
-
-禁止用途：
-
-* 敏感資料
-* token
-* 密碼
+* 要插 HTML 時，先確定資料來源可控
+* 純文字輸出優先用 `textContent` / `value`
+* 所有檔案處理預設在瀏覽器本機完成
 
 ---
 
-# 12. 工具分類定義
+# 11. SEO 與靜態頁同步
 
-| 類別      | 說明   |
-| ------- | ---- |
-| text    | 文字處理 |
-| image   | 圖片處理 |
-| convert | 格式轉換 |
-| dev     | 開發工具 |
-| data    | 資料工具 |
-| utility | 通用工具 |
+新增工具後，除了頁面本身，通常要同步確認：
 
----
-
-# 13. 工具品質標準
-
-新工具上線必須符合：
-
-* 可複製結果
-* 有範例
-* 有錯誤提示
-* 行動裝置可用
+* 該工具頁的 `<title>`
+* `<meta name="description">`
+* `<meta name="keywords">`
+* `sitemap.xml`
+* 所屬分類頁的 description / keywords 是否需要補新工具關鍵字
 
 ---
 
-# 14. 錯誤處理標準
+# 12. 這次新增工具實例：SRT 區間平移器
 
-所有錯誤統一格式：
+這次新增的是資料工具類別的 `SRT 區間平移器`，目的是：
 
-```
-toast("Invalid input format")
-```
+* 上傳或貼上 `.srt`
+* 指定保留的時間區間
+* 依起始範圍自動平移字幕時間
+* 讓選定區間的起點自動對齊 `00:00:00,000`
+* 重新編號輸出字幕
+* 下載新的 `.srt`
 
-不可使用：
+本次落點：
 
-```
-alert()
-```
+* 頁面：`data/srt_range_shift/index.html`
+* 邏輯：`assets/js/tools/srt_range_shift.js`
+* redirect：`tools/data/srt_range_shift.html`
+* 註冊：`assets/js/tools.registry.js`
 
----
-
-# 15. 版本管理策略
-
-Git commit 規範：
-
-```
-feat: add url encoder
-fix: json formatter bug
-style: ui update
-refactor: optimize parser
-```
+這個工具很適合作為之後新增「檔案輸入 + 純前端轉換 + 下載輸出」類型功能的參考模板。
 
 ---
 
-# 16. 未來擴充預留
+# 13. 新工具開發 SOP
 
-架構必須支援未來加入：
+實際操作時，建議照這個順序：
 
-* WebAssembly 工具
-* Worker thread 運算
-* 後端 API 任務工具
-
----
-
-# 17. MVP 工具清單（第一階段）
-
-必做：
-
-```
-/text/json_formatter
-/text/url_encode
-/dev/uuid_generator
-/dev/hash_generator
-/image/resize
-/image/compress
-/data/qr_generator
-```
+1. 先選分類與 URL path
+2. 建立 `/分類/工具名/index.html`
+3. 建立 `/assets/js/tools/工具名.js`
+4. 用 `bindPageI18n` 補齊中英文文案
+5. 註冊到 `tools.registry.js`
+6. 新增 `/tools/...` redirect
+7. 更新 sitemap 與相關 meta
+8. 手動測一次首頁搜尋、分類頁、推薦工具、工具頁功能
 
 ---
 
-# 18. 設計原則（核心哲學）
+# 14. 維護時優先檢查哪些地方
 
-ToolNestTW 不追求：
+如果某個工具「頁面存在但站內找不到」，先檢查：
 
-> 工具數量多
+* `tools.registry.js` 有沒有註冊
+* `category` 是否正確
+* `path` 是否和實際目錄一致
 
-ToolNestTW 追求：
+如果某個工具「可開頁但推薦工具沒變」，先檢查：
 
-> 每個工具都是該關鍵字最佳頁
+* `layout.js`
+* `tools.registry.js`
+* 目前頁面 `path` 是否正常
 
----
+如果某個工具「功能正常但搜尋抓不到」，先檢查：
 
-# 19. 開發準則總結
-
-開發任何新工具時，請先確認：
-
-```
-是否能純前端完成？
-是否能單頁完成？
-是否有搜尋需求？
-是否可模組化？
-```
-
-只要有一項答案是否 → 不建議開發
+* `keywords`
+* 中英文名稱
+* summary 是否太弱
 
 ---
 
-# 最終結語（給工程團隊）
+# 15. 開發準則總結
 
-ToolNestTW 的成功關鍵不是技術複雜度，而是：
+開發任何新工具時，先問四件事：
 
-* 架構一致性
-* 工具品質
-* SEO 結構
-* 擴充速度
+* 能不能純前端完成？
+* 能不能維持單頁體驗？
+* 能不能重用現有 layout / registry / toast / copy / download？
+* 上線後首頁、分類頁、推薦工具、sitemap 是否會一起更新？
 
-請嚴格遵守本手冊規範。
+這四件事都成立，再開始做。
 
 ---

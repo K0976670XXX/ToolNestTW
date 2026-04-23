@@ -53,6 +53,19 @@ export const toolRegistry = [
   },
   {
     name: {
+      en: "SRT Range Shift",
+      zh: "SRT 區間平移器"
+    },
+    path: "/data/srt_range_shift",
+    category: "data",
+    keywords: ["srt", "subtitle", "subtitle shift", "subtitle trim", "字幕", "時間軸", "平移"],
+    summary: {
+      zh: "擷取指定字幕區間，並依起始範圍自動平移時間軸。",
+      en: "Filter subtitle cues by range and auto-shift timestamps from the selected start."
+    }
+  },
+  {
+    name: {
       en: "URL Encoder / Decoder",
       zh: "URL 編碼解碼"
     },
