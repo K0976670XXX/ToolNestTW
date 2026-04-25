@@ -235,6 +235,19 @@ export const toolRegistry = [
   },
   {
     name: {
+      en: "Image Perspective Corrector",
+      zh: "圖片透視校正"
+    },
+    path: "/image/perspective_correct",
+    category: "image",
+    keywords: ["image", "perspective", "warp", "document scan", "四點校正", "透視", "校正"],
+    summary: {
+      zh: "透過四點選取展平圖片透視，並提供放大鏡輔助選點。",
+      en: "Flatten perspective from four selected corners with a live magnifier."
+    }
+  },
+  {
+    name: {
       en: "Gemini Watermark Remover",
       zh: "Gemini 浮水印移除"
     },
