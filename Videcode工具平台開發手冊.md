@@ -1,7 +1,7 @@
 # ToolNestTW Web Tools 平台開發手冊
 
-版本：v1.1  
-更新日期：2026-04-24  
+版本：v1.3  
+更新日期：2026-04-26  
 架構類型：純前端靜態工具站（Static + Modular JS）
 
 ---
@@ -257,7 +257,52 @@
 
 ---
 
-# 13. 新工具開發 SOP
+# 13. 這次新增工具實例：影片轉 GIF / WebP / APNG
+
+這次新增的是圖片工具類別的 `影片轉 GIF / WebP / APNG`，目的是：
+
+* 上傳影片後，指定要轉換的起訖時間
+* 以倍速調整輸出動畫速度，但維持輸出幀數總數
+* 以每 N 幀抓取一次降低幀數，但維持播放速度
+* 選擇輸出格式：`GIF`、`WEBP`、`APNG`
+* 調整輸出寬度或高度，並自動維持比例
+* 透過畫面裁切框指定輸出範圍
+* 在頁面內直接預覽轉換後動畫，再下載結果
+
+本次落點：
+
+* 頁面：`image/video_to_gif/index.html`
+* 邏輯：`assets/js/tools/video_to_gif.js`
+* redirect：`tools/image/video_to_gif.html`
+* 註冊：`assets/js/tools.registry.js`
+
+這個工具適合作為之後新增「影片輸入 + canvas 擷取 + 前端編碼輸出」類型功能的參考模板。
+
+---
+
+# 14. 這次新增工具實例：動畫 GIF 去背
+
+這次新增的是圖片工具類別的 `動畫 GIF 去背`，目的是：
+
+* 上傳 `GIF`、`Animated WebP` 或 `APNG`
+* 用 `ImageDecoder` 逐幀解碼動畫
+* 透過滴管或色碼選擇要移除的背景色
+* 依容忍度全局移除所有相近顏色像素
+* 重新輸出 `GIF`、`WEBP` 或 `APNG`
+* 在頁面內預覽透明背景動畫，再下載結果
+
+本次落點：
+
+* 頁面：`image/animation_bg_remove/index.html`
+* 邏輯：`assets/js/tools/animation_bg_remove.js`
+* redirect：`tools/image/animation_bg_remove.html`
+* 註冊：`assets/js/tools.registry.js`
+
+這個工具適合作為之後新增「動畫圖片輸入 + 逐幀 canvas 處理 + 透明輸出」類型功能的參考模板。
+
+---
+
+# 15. 新工具開發 SOP
 
 實際操作時，建議照這個順序：
 
@@ -272,7 +317,7 @@
 
 ---
 
-# 14. 維護時優先檢查哪些地方
+# 16. 維護時優先檢查哪些地方
 
 如果某個工具「頁面存在但站內找不到」，先檢查：
 
@@ -294,7 +339,7 @@
 
 ---
 
-# 15. 開發準則總結
+# 17. 開發準則總結
 
 開發任何新工具時，先問四件事：
 

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW 影片轉 GIF / WebP / APNG</title>
+    <meta
+      name="description"
+      content="Convert video clips to GIF, animated WebP, or APNG in your browser with crop area, speed, frame step, resize, and live preview."
+    />
+    <meta
+      name="keywords"
+      content="video to gif,video to webp,video to apng,animated gif maker,video crop gif"
+    />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>影片轉 GIF / WebP / APNG</h1>
+          <p class="lead">上傳影片後可設定倍速、抽幀、裁切範圍與尺寸，並即時預覽輸出效果。</p>
+        </section>
+
+        <section class="panel">
+          <h2>輸入</h2>
+          <div id="vtg-drop-zone" class="drop-zone">
+            <strong>拖曳單支影片到這裡</strong>
+            <p class="hint">或手動選擇影片，全部在瀏覽器本機處理</p>
+            <input id="vtg-file" type="file" accept="video/*" />
+          </div>
+          <p id="vtg-file-name" class="hint video-file-meta">尚未載入影片。</p>
+          <video id="vtg-source-video" class="video-source-player" controls muted playsinline hidden></video>
+        </section>
+
+        <section class="panel">
+          <h2>設定</h2>
+          <div class="video-tool-grid">
+            <div class="field">
+              <label for="vtg-start-time">起始時間 (秒)</label>
+              <input id="vtg-start-time" type="number" min="0" step="0.001" value="0" />
+              <p id="vtg-start-label" class="hint">00:00.000</p>
+            </div>
+            <div class="field">
+              <label for="vtg-end-time">結束時間 (秒)</label>
+              <input id="vtg-end-time" type="number" min="0" step="0.001" value="0" />
+              <p id="vtg-end-label" class="hint">00:00.000</p>
+            </div>
+            <div class="field">
+              <label for="vtg-speed">輸出倍速</label>
+              <input id="vtg-speed" type="number" min="0.1" step="0.1" value="1" />
+              <p id="vtg-speed-hint" class="hint">1 倍，維持輸出幀數總數。</p>
+            </div>
+            <div class="field">
+              <label for="vtg-frame-step">每幾幀抓取一次</label>
+              <input id="vtg-frame-step" type="number" min="1" step="1" value="1" />
+              <p id="vtg-frame-step-hint" class="hint">1 幀，維持播放速度。</p>
+            </div>
+            <div class="field">
+              <label for="vtg-output-format">輸出格式</label>
+              <select id="vtg-output-format">
+                <option value="gif">GIF</option>
+                <option value="webp">WEBP</option>
+                <option value="apng">APNG</option>
+              </select>
+              <p id="vtg-format-hint" class="hint">預設 GIF。</p>
+            </div>
+            <div class="field">
+              <label for="vtg-width">輸出寬度</label>
+              <input id="vtg-width" type="number" min="1" step="1" />
+              <p id="vtg-width-hint" class="hint">輸入寬度會自動換算高度。</p>
+            </div>
+            <div class="field">
+              <label for="vtg-height">輸出高度</label>
+              <input id="vtg-height" type="number" min="1" step="1" />
+              <p id="vtg-height-hint" class="hint">輸入高度會自動換算寬度。</p>
+            </div>
+            <div class="field">
+              <label for="vtg-preview-time">裁切預覽時間 (秒)</label>
+              <input id="vtg-preview-time" type="number" min="0" step="0.001" value="0" />
+              <p id="vtg-preview-label" class="hint">00:00.000</p>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="vtg-set-start-btn" class="btn" type="button">設為目前起點</button>
+            <button id="vtg-set-end-btn" class="btn" type="button">設為目前終點</button>
+            <button id="vtg-sync-frame-btn" class="btn" type="button">同步目前畫面到裁切區</button>
+            <button id="vtg-reset-crop-btn" class="btn" type="button">重設裁切</button>
+            <button id="vtg-render-btn" class="btn btn-primary" type="button">產生預覽</button>
+            <button id="vtg-clear-btn" class="btn btn-danger" type="button">清除</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>裁切範圍</h2>
+          <p id="vtg-status" class="video-status" role="status" aria-live="polite">請先載入影片。</p>
+          <div class="video-crop-grid">
+            <section class="video-crop-panel">
+              <div id="vtg-crop-empty" class="thumb-empty">載入影片後，可同步目前畫面並拖曳裁切框。</div>
+              <div id="vtg-crop-wrap" class="video-crop-wrap" hidden>
+                <canvas id="vtg-crop-canvas" class="video-crop-canvas"></canvas>
+              </div>
+              <p id="vtg-crop-hint" class="hint">可拖曳框內移動，或拉四個角調整範圍。</p>
+            </section>
+            <aside class="video-crop-side">
+              <section class="video-crop-card">
+                <h3 id="vtg-source-meta-title">來源資訊</h3>
+                <div id="vtg-source-meta" class="kv"></div>
+              </section>
+              <section class="video-crop-card">
+                <h3 id="vtg-crop-meta-title">裁切資訊</h3>
+                <div id="vtg-crop-meta" class="kv"></div>
+              </section>
+            </aside>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>預覽與下載</h2>
+          <div class="preview-grid">
+            <section class="preview-box">
+              <h3 id="vtg-preview-title">輸出預覽</h3>
+              <div id="vtg-preview-empty" class="thumb-empty">產生預覽後會顯示動畫效果。</div>
+              <img id="vtg-preview-image" class="video-preview-image" alt="" hidden />
+              <p id="vtg-preview-hint" class="hint">會直接預覽轉換後的 GIF / WEBP / APNG。</p>
+            </section>
+            <section class="preview-box">
+              <h3 id="vtg-output-meta-title">輸出資訊</h3>
+              <div id="vtg-output-meta" class="kv"></div>
+              <div class="actions">
+                <button id="vtg-download-btn" class="btn" type="button" disabled>下載檔案</button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>使用方式</h2>
+          <p>1. 上傳影片後，設定起訖時間、倍速、抽幀與輸出格式。</p>
+          <p>2. 在播放器停在想看的畫面，再同步到裁切區調整輸出範圍。</p>
+          <p>3. 產生預覽確認效果後，再下載 GIF、WEBP 或 APNG。</p>
+        </section>
+
+        <section class="panel">
+          <h2>常見問題</h2>
+          <p><strong>影片會上傳嗎？</strong> 不會，全部在瀏覽器本機處理。</p>
+          <p><strong>倍速與抽幀差別是什麼？</strong> 倍速會改變每幀延遲、維持輸出幀數；抽幀會減少抓取的畫格，但維持播放速度。</p>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.27";
+      import initVideoToGif from "/assets/js/tools/video_to_gif.js?v=1.6.27";
+
+      initLayout();
+      initVideoToGif();
+    </script>
+  </body>
+</html>

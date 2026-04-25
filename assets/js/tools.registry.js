@@ -248,6 +248,32 @@ export const toolRegistry = [
   },
   {
     name: {
+      en: "Video to GIF / WebP / APNG",
+      zh: "影片轉 GIF / WebP / APNG"
+    },
+    path: "/image/video_to_gif",
+    category: "image",
+    keywords: ["video", "gif", "webp", "apng", "animation", "影片", "裁切", "動畫"],
+    summary: {
+      zh: "將影片片段轉成 GIF、WEBP 或 APNG，支援倍速、抽幀、裁切與預覽。",
+      en: "Convert video clips to GIF, WEBP, or APNG with speed, frame step, crop, and preview."
+    }
+  },
+  {
+    name: {
+      en: "Animated Background Remover",
+      zh: "動畫 GIF 去背"
+    },
+    path: "/image/animation_bg_remove",
+    category: "image",
+    keywords: ["gif", "webp", "apng", "background remover", "transparent", "remove color", "去背", "透明", "動畫"],
+    summary: {
+      zh: "移除 GIF、WEBP 或 APNG 動畫中符合選定顏色的背景像素，支援滴管、容忍度與預覽。",
+      en: "Remove matching background-color pixels from GIF, WEBP, or APNG animations with eyedropper, tolerance, and preview."
+    }
+  },
+  {
+    name: {
       en: "Gemini Watermark Remover",
       zh: "Gemini 浮水印移除"
     },

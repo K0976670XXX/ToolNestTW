@@ -4,7 +4,7 @@ import {
   getToolDisplayName,
   getToolSummary,
   toolRegistry
-} from "/assets/js/tools.registry.js?v=1.6.26";
+} from "/assets/js/tools.registry.js?v=1.6.28";
 import {
   getFavoriteTools,
   getRecentTools,
