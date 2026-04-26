@@ -12,6 +12,10 @@ const MAGNIFIER_SIZE = 150;
 const MAGNIFIER_OFFSET = 18;
 const MAGNIFIER_SAMPLE_HALF = 18;
 
+function getMagnifierSize() {
+  return window.matchMedia("(max-width: 760px)").matches ? 170 : MAGNIFIER_SIZE;
+}
+
 const copy = {
   zh: {
     invalid: "輸入格式錯誤",
@@ -24,6 +28,7 @@ const copy = {
     pointsProgress: "已選 {count} / 4 點。",
     pointsDone: "已選滿 4 點，正在或已完成透視校正。",
     selecting: "請在圖片上點四個角，順序不限。",
+    dragging: "可拖曳已選的點微調位置。",
     processing: "正在進行透視校正...",
     corrected: "透視校正完成。",
     resetDone: "已清除目前選點。",
@@ -56,6 +61,7 @@ const copy = {
     pointsProgress: "Selected {count} / 4 points.",
     pointsDone: "All four points are selected. Perspective correction is ready or completed.",
     selecting: "Click four corners on the image. Order does not matter.",
+    dragging: "Drag any selected point to fine-tune its position.",
     processing: "Applying perspective correction...",
     corrected: "Perspective correction completed.",
     resetDone: "Selection points cleared.",
@@ -92,6 +98,10 @@ function getFileStem(name) {
   const dot = safeName.lastIndexOf(".");
   const stem = dot > 0 ? safeName.slice(0, dot) : safeName;
   return stem || "image";
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
 }
 
 function distance(a, b) {
@@ -272,13 +282,14 @@ function drawStage(context, state) {
     context.stroke();
   }
 
+  const pointRadius = window.matchMedia("(pointer: coarse)").matches ? 10 : 7;
   selectedPoints.forEach((point, index) => {
     const displayPoint = toDisplay(point);
     context.fillStyle = "#ffffff";
     context.strokeStyle = "#bf2445";
     context.lineWidth = 3;
     context.beginPath();
-    context.arc(displayPoint.x, displayPoint.y, 7, 0, Math.PI * 2);
+    context.arc(displayPoint.x, displayPoint.y, pointRadius, 0, Math.PI * 2);
     context.fill();
     context.stroke();
 
@@ -532,8 +543,8 @@ export default function initImagePerspectiveCorrect() {
         en: "or choose one image manually, then click four corners on the preview"
       },
       "#pc-stage-hint": {
-        zh: "四點可任意順序點選。游標在圖片上移動時，旁邊會顯示放大鏡。",
-        en: "You can click the four corners in any order. A magnifier appears beside the cursor while moving on the image."
+        zh: "四點可任意順序點選，也可拖曳已選的點微調。游標在圖片上移動時，旁邊會顯示放大鏡。",
+        en: "You can click the four corners in any order, then drag any selected point to fine-tune it. A magnifier appears beside the cursor."
       },
       "#pc-point-title": { zh: "選點資訊", en: "Point Details" },
       "#pc-meta-title": { zh: "影像資訊", en: "Image Details" },
@@ -582,6 +593,12 @@ export default function initImagePerspectiveCorrect() {
     sourceImageData: null,
     selectedPoints: [],
     hoverPoint: null,
+    dragPointIndex: -1,
+    dragMoved: false,
+    pointerDown: false,
+    pointerDownMoved: false,
+    pointerDownStartDisplay: null,
+    pendingAddPoint: null,
     display: { scale: 1, width: 0, height: 0 },
     output: null,
     outputUrl: "",
@@ -752,15 +769,16 @@ export default function initImagePerspectiveCorrect() {
       return;
     }
 
+    const magnifierSize = getMagnifierSize();
     const sampleHalf = MAGNIFIER_SAMPLE_HALF / state.display.scale;
     const sx = originalPoint.x - sampleHalf;
     const sy = originalPoint.y - sampleHalf;
-    magnifierCanvas.width = MAGNIFIER_SIZE;
-    magnifierCanvas.height = MAGNIFIER_SIZE;
-    magnifierCanvas.style.width = `${MAGNIFIER_SIZE}px`;
-    magnifierCanvas.style.height = `${MAGNIFIER_SIZE}px`;
+    magnifierCanvas.width = magnifierSize;
+    magnifierCanvas.height = magnifierSize;
+    magnifierCanvas.style.width = `${magnifierSize}px`;
+    magnifierCanvas.style.height = `${magnifierSize}px`;
     magnifierContext.imageSmoothingEnabled = false;
-    magnifierContext.clearRect(0, 0, MAGNIFIER_SIZE, MAGNIFIER_SIZE);
+    magnifierContext.clearRect(0, 0, magnifierSize, magnifierSize);
     magnifierContext.drawImage(
       sourceCanvas,
       sx,
@@ -769,23 +787,23 @@ export default function initImagePerspectiveCorrect() {
       sampleHalf * 2,
       0,
       0,
-      MAGNIFIER_SIZE,
-      MAGNIFIER_SIZE
+      magnifierSize,
+      magnifierSize
     );
     magnifierContext.strokeStyle = "rgba(255,255,255,0.92)";
     magnifierContext.lineWidth = 1;
     magnifierContext.beginPath();
-    magnifierContext.moveTo(MAGNIFIER_SIZE / 2, 0);
-    magnifierContext.lineTo(MAGNIFIER_SIZE / 2, MAGNIFIER_SIZE);
-    magnifierContext.moveTo(0, MAGNIFIER_SIZE / 2);
-    magnifierContext.lineTo(MAGNIFIER_SIZE, MAGNIFIER_SIZE / 2);
+    magnifierContext.moveTo(magnifierSize / 2, 0);
+    magnifierContext.lineTo(magnifierSize / 2, magnifierSize);
+    magnifierContext.moveTo(0, magnifierSize / 2);
+    magnifierContext.lineTo(magnifierSize, magnifierSize / 2);
     magnifierContext.stroke();
     magnifierLabel.textContent = t("magnifier");
 
-    const maxLeft = canvasWrap.clientWidth - MAGNIFIER_SIZE - 8;
-    const maxTop = canvasWrap.clientHeight - MAGNIFIER_SIZE - 8;
+    const maxLeft = canvasWrap.clientWidth - magnifierSize - 8;
+    const maxTop = canvasWrap.clientHeight - magnifierSize - 8;
     const nextLeft = Math.max(8, Math.min(maxLeft, displayX + MAGNIFIER_OFFSET));
-    const nextTop = Math.max(8, Math.min(maxTop, displayY - MAGNIFIER_SIZE - 8 < 8 ? displayY + MAGNIFIER_OFFSET : displayY - MAGNIFIER_SIZE - 8));
+    const nextTop = Math.max(8, Math.min(maxTop, displayY - magnifierSize - 8 < 8 ? displayY + MAGNIFIER_OFFSET : displayY - magnifierSize - 8));
 
     magnifier.style.left = `${nextLeft}px`;
     magnifier.style.top = `${nextTop}px`;
@@ -797,18 +815,28 @@ export default function initImagePerspectiveCorrect() {
       return null;
     }
     const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
+    const x = event.clientX - rect.left - canvas.clientLeft;
+    const y = event.clientY - rect.top - canvas.clientTop;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    if (x < 0 || y < 0 || x > width || y > height) {
       return null;
     }
     return {
       original: {
-        x: x / state.display.scale,
-        y: y / state.display.scale
+        x: clamp((x / Math.max(1, width)) * state.source.image.width, 0, state.source.image.width),
+        y: clamp((y / Math.max(1, height)) * state.source.image.height, 0, state.source.image.height)
       },
       display: { x, y }
     };
+  };
+
+  const getPointHitIndex = (point) => {
+    if (!state.selectedPoints.length) {
+      return -1;
+    }
+    const threshold = (window.matchMedia("(pointer: coarse)").matches ? 22 : 14) / Math.max(state.display.scale, 0.0001);
+    return state.selectedPoints.findIndex((selectedPoint) => distance(selectedPoint, point) <= threshold);
   };
 
   const applySourceItem = async (file) => {
@@ -829,6 +857,12 @@ export default function initImagePerspectiveCorrect() {
       state.sourceImageData = sourceContext.getImageData(0, 0, image.width, image.height);
       state.selectedPoints = [];
       state.hoverPoint = null;
+      state.dragPointIndex = -1;
+      state.dragMoved = false;
+      state.pointerDown = false;
+      state.pointerDownMoved = false;
+      state.pointerDownStartDisplay = null;
+      state.pendingAddPoint = null;
       cleanupOutput();
       renderFileMeta();
       renderPointMeta();
@@ -885,38 +919,108 @@ export default function initImagePerspectiveCorrect() {
     onFiles: readFiles
   });
 
+  canvas.addEventListener("pointerdown", (event) => {
+    if (!state.source || state.busy) {
+      return;
+    }
+    const next = getOriginalPointFromEvent(event);
+    if (!next) {
+      return;
+    }
+    state.pointerDown = true;
+    state.pointerDownMoved = false;
+    state.pointerDownStartDisplay = next.display;
+    const hitIndex = getPointHitIndex(next.original);
+    if (hitIndex === -1) {
+      state.pendingAddPoint = next.original;
+      canvas.setPointerCapture?.(event.pointerId);
+      event.preventDefault();
+      return;
+    }
+    state.pendingAddPoint = null;
+    state.dragPointIndex = hitIndex;
+    state.dragMoved = false;
+    canvas.setPointerCapture?.(event.pointerId);
+    event.preventDefault();
+  });
+
   canvas.addEventListener("pointermove", (event) => {
     const next = getOriginalPointFromEvent(event);
     if (!next) {
       hideMagnifier();
       return;
     }
+    if (state.dragPointIndex >= 0) {
+      state.selectedPoints[state.dragPointIndex] = next.original;
+      state.dragMoved = true;
+      state.pointerDownMoved = true;
+      cleanupOutput();
+      renderPointMeta();
+      renderMagnifier(next.original, next.display.x, next.display.y);
+      setStatus(t("dragging"), "idle");
+      return;
+    }
+    if (state.pointerDown) {
+      const start = state.pointerDownStartDisplay || next.display;
+      const deltaX = next.display.x - start.x;
+      const deltaY = next.display.y - start.y;
+      if (Math.hypot(deltaX, deltaY) > 8) {
+        state.pointerDownMoved = true;
+      }
+    }
     renderMagnifier(next.original, next.display.x, next.display.y);
   });
 
   canvas.addEventListener("pointerleave", () => {
-    hideMagnifier();
+    if (state.dragPointIndex < 0) {
+      hideMagnifier();
+    }
   });
 
-  canvas.addEventListener("click", (event) => {
-    if (!state.source) {
-      toast(t("noInput"));
+  const stopDraggingPoint = (event) => {
+    const next = getOriginalPointFromEvent(event);
+    if (state.dragPointIndex >= 0) {
+      const shouldProcess = state.dragMoved && state.selectedPoints.length === 4;
+      state.dragPointIndex = -1;
+      state.pointerDown = false;
+      state.pointerDownMoved = false;
+      state.pointerDownStartDisplay = null;
+      state.pendingAddPoint = null;
+      canvas.releasePointerCapture?.(event.pointerId);
+      renderPointMeta();
+      renderStage();
+      if (shouldProcess) {
+        void processPoints();
+        return;
+      }
+      setStatus(t("dragging"), "idle");
       return;
     }
-    if (state.busy) {
+
+    if (!state.pointerDown) {
+      return;
+    }
+
+    state.pointerDown = false;
+    canvas.releasePointerCapture?.(event.pointerId);
+    if (!next || state.pointerDownMoved || !state.pendingAddPoint) {
+      state.pointerDownMoved = false;
+      state.pointerDownStartDisplay = null;
+      state.pendingAddPoint = null;
       return;
     }
     if (state.selectedPoints.length >= 4) {
       toast(t("maxPoints"));
+      state.pointerDownMoved = false;
+      state.pointerDownStartDisplay = null;
+      state.pendingAddPoint = null;
       return;
     }
 
-    const next = getOriginalPointFromEvent(event);
-    if (!next) {
-      return;
-    }
-
-    state.selectedPoints.push(next.original);
+    state.selectedPoints.push(state.pendingAddPoint);
+    state.pointerDownMoved = false;
+    state.pointerDownStartDisplay = null;
+    state.pendingAddPoint = null;
     cleanupOutput();
     renderPointMeta();
     renderStage();
@@ -927,7 +1031,10 @@ export default function initImagePerspectiveCorrect() {
     }
 
     setStatus(t("pointsProgress", { count: state.selectedPoints.length }), "idle");
-  });
+  };
+
+  canvas.addEventListener("pointerup", stopDraggingPoint);
+  canvas.addEventListener("pointercancel", stopDraggingPoint);
 
   undoBtn.addEventListener("click", () => {
     if (state.busy) {
@@ -978,6 +1085,10 @@ export default function initImagePerspectiveCorrect() {
     state.sourceImageData = null;
     state.selectedPoints = [];
     state.hoverPoint = null;
+    state.pointerDown = false;
+    state.pointerDownMoved = false;
+    state.pointerDownStartDisplay = null;
+    state.pendingAddPoint = null;
     fileInput.value = "";
     cleanupOutput();
     renderFileMeta();

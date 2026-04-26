@@ -313,21 +313,174 @@ function parseWebPFrameChunks(bytes) {
   };
 }
 
-function quantizeRgb332(r, g, b) {
-  return ((r >> 5) << 5) | ((g >> 5) << 2) | (b >> 6);
+function buildGifHistogram(imageData) {
+  const bins = new Map();
+  const data = imageData.data;
+  for (let offset = 0; offset < data.length; offset += 4) {
+    const r5 = data[offset] >> 3;
+    const g5 = data[offset + 1] >> 3;
+    const b5 = data[offset + 2] >> 3;
+    const key = (r5 << 10) | (g5 << 5) | b5;
+    const existing = bins.get(key);
+    if (existing) {
+      existing.count += 1;
+      existing.rSum += data[offset];
+      existing.gSum += data[offset + 1];
+      existing.bSum += data[offset + 2];
+      continue;
+    }
+    bins.set(key, {
+      key,
+      count: 1,
+      r5,
+      g5,
+      b5,
+      rSum: data[offset],
+      gSum: data[offset + 1],
+      bSum: data[offset + 2]
+    });
+  }
+  return Array.from(bins.values());
 }
 
-function buildGifPalette() {
-  const palette = new Uint8Array(256 * 3);
-  for (let index = 0; index < 256; index += 1) {
-    const r = (index >> 5) & 0x07;
-    const g = (index >> 2) & 0x07;
-    const b = index & 0x03;
-    palette[index * 3] = Math.round((r / 7) * 255);
-    palette[index * 3 + 1] = Math.round((g / 7) * 255);
-    palette[index * 3 + 2] = Math.round((b / 3) * 255);
+function summarizeGifBox(entries, indices) {
+  let rMin = 31;
+  let rMax = 0;
+  let gMin = 31;
+  let gMax = 0;
+  let bMin = 31;
+  let bMax = 0;
+  let count = 0;
+  let rSum = 0;
+  let gSum = 0;
+  let bSum = 0;
+
+  indices.forEach((index) => {
+    const entry = entries[index];
+    rMin = Math.min(rMin, entry.r5);
+    rMax = Math.max(rMax, entry.r5);
+    gMin = Math.min(gMin, entry.g5);
+    gMax = Math.max(gMax, entry.g5);
+    bMin = Math.min(bMin, entry.b5);
+    bMax = Math.max(bMax, entry.b5);
+    count += entry.count;
+    rSum += entry.rSum;
+    gSum += entry.gSum;
+    bSum += entry.bSum;
+  });
+
+  return {
+    indices,
+    rMin,
+    rMax,
+    gMin,
+    gMax,
+    bMin,
+    bMax,
+    count,
+    rSum,
+    gSum,
+    bSum
+  };
+}
+
+function splitGifBox(entries, box) {
+  if (box.indices.length <= 1) {
+    return [box];
   }
-  return palette;
+
+  const rRange = box.rMax - box.rMin;
+  const gRange = box.gMax - box.gMin;
+  const bRange = box.bMax - box.bMin;
+  const axis = rRange >= gRange && rRange >= bRange ? "r5" : gRange >= bRange ? "g5" : "b5";
+  const sorted = [...box.indices].sort((a, b) => entries[a][axis] - entries[b][axis]);
+
+  let running = 0;
+  const midpoint = box.count / 2;
+  let splitAt = 1;
+  for (let index = 0; index < sorted.length; index += 1) {
+    running += entries[sorted[index]].count;
+    if (running >= midpoint) {
+      splitAt = Math.min(sorted.length - 1, Math.max(1, index + 1));
+      break;
+    }
+  }
+
+  const left = sorted.slice(0, splitAt);
+  const right = sorted.slice(splitAt);
+  if (!left.length || !right.length) {
+    return [box];
+  }
+  return [summarizeGifBox(entries, left), summarizeGifBox(entries, right)];
+}
+
+function buildAdaptiveGifPalette(imageData, maxColors = 256) {
+  const entries = buildGifHistogram(imageData);
+  if (!entries.length) {
+    return {
+      palette: new Uint8Array([0, 0, 0]),
+      entryToPalette: new Map(),
+      colorCount: 1
+    };
+  }
+
+  let boxes = [summarizeGifBox(entries, entries.map((_, index) => index))];
+  while (boxes.length < maxColors) {
+    let splitIndex = -1;
+    let bestScore = -1;
+    boxes.forEach((box, index) => {
+      const score = Math.max(box.rMax - box.rMin, box.gMax - box.gMin, box.bMax - box.bMin) * box.count;
+      if (box.indices.length > 1 && score > bestScore) {
+        bestScore = score;
+        splitIndex = index;
+      }
+    });
+    if (splitIndex === -1) {
+      break;
+    }
+    const [target] = boxes.splice(splitIndex, 1);
+    boxes.push(...splitGifBox(entries, target));
+  }
+
+  const palette = new Uint8Array(boxes.length * 3);
+  const entryToPalette = new Map();
+  boxes.forEach((box, paletteIndex) => {
+    const count = Math.max(1, box.count);
+    palette[paletteIndex * 3] = Math.round(box.rSum / count);
+    palette[paletteIndex * 3 + 1] = Math.round(box.gSum / count);
+    palette[paletteIndex * 3 + 2] = Math.round(box.bSum / count);
+    box.indices.forEach((entryIndex) => {
+      entryToPalette.set(entries[entryIndex].key, paletteIndex);
+    });
+  });
+
+  return {
+    palette,
+    entryToPalette,
+    colorCount: boxes.length
+  };
+}
+
+function padGifPalette(palette) {
+  const colorCount = Math.max(2, Math.ceil(palette.length / 3));
+  const tableSize = 2 ** Math.ceil(Math.log2(colorCount));
+  const padded = new Uint8Array(tableSize * 3);
+  padded.set(palette);
+  return {
+    palette: padded,
+    colorCount,
+    tableSize
+  };
+}
+
+function quantizeGifFrame(imageData, paletteInfo) {
+  const indexed = new Uint8Array(imageData.width * imageData.height);
+  const data = imageData.data;
+  for (let offset = 0, index = 0; offset < data.length; offset += 4, index += 1) {
+    const key = ((data[offset] >> 3) << 10) | ((data[offset + 1] >> 3) << 5) | (data[offset + 2] >> 3);
+    indexed[index] = paletteInfo.entryToPalette.get(key) ?? 0;
+  }
+  return indexed;
 }
 
 function packGifCodes(codes, minCodeSize) {
@@ -379,27 +532,26 @@ function gifSubBlocks(bytes) {
 }
 
 function encodeGif(frames, width, height) {
-  const palette = buildGifPalette();
   const parts = [];
   const header = new TextEncoder().encode("GIF89a");
   const screenDescriptor = concatUint8Arrays([
     createUint16LE(width),
     createUint16LE(height),
-    new Uint8Array([0xf7, 0x00, 0x00])
+    new Uint8Array([0x70, 0x00, 0x00])
   ]);
   const loopExtension = new Uint8Array([
     0x21, 0xff, 0x0b,
     0x4e, 0x45, 0x54, 0x53, 0x43, 0x41, 0x50, 0x45, 0x32, 0x2e, 0x30,
     0x03, 0x01, 0x00, 0x00, 0x00
   ]);
-  parts.push(header, screenDescriptor, palette, loopExtension);
+  parts.push(header, screenDescriptor, loopExtension);
 
   frames.forEach((frame) => {
-    const indexed = new Uint8Array(width * height);
-    const pixels = frame.imageData.data;
-    for (let offset = 0, index = 0; offset < pixels.length; offset += 4, index += 1) {
-      indexed[index] = quantizeRgb332(pixels[offset], pixels[offset + 1], pixels[offset + 2]);
-    }
+    const adaptivePalette = buildAdaptiveGifPalette(frame.imageData, 256);
+    const paddedPalette = padGifPalette(adaptivePalette.palette);
+    const indexed = quantizeGifFrame(frame.imageData, adaptivePalette);
+    const tableBits = Math.max(0, Math.ceil(Math.log2(paddedPalette.tableSize)) - 1);
+    const minCodeSize = Math.max(2, Math.ceil(Math.log2(paddedPalette.colorCount)));
 
     const delayCs = Math.max(2, Math.round(frame.delayMs / 10));
     const gce = new Uint8Array([0x21, 0xf9, 0x04, 0x00, delayCs & 0xff, (delayCs >>> 8) & 0xff, 0x00, 0x00]);
@@ -409,10 +561,10 @@ function encodeGif(frames, width, height) {
       createUint16LE(0),
       createUint16LE(width),
       createUint16LE(height),
-      new Uint8Array([0x00])
+      new Uint8Array([0x80 | tableBits])
     ]);
-    const compressed = packGifCodes(indexed, 8);
-    parts.push(gce, imageDescriptor, new Uint8Array([0x08]), gifSubBlocks(compressed));
+    const compressed = packGifCodes(indexed, minCodeSize);
+    parts.push(gce, imageDescriptor, paddedPalette.palette, new Uint8Array([minCodeSize]), gifSubBlocks(compressed));
   });
 
   parts.push(new Uint8Array([0x3b]));

@@ -1166,6 +1166,7 @@ textarea[readonly] {
   border: 1px solid var(--border);
   background: #fff;
   cursor: crosshair;
+  touch-action: none;
 }
 
 .perspective-magnifier {
