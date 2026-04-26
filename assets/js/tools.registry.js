@@ -222,6 +222,19 @@ export const toolRegistry = [
   },
   {
     name: {
+      en: "LLM Chat API Tester",
+      zh: "LLM 對話測試器"
+    },
+    path: "/dev/llm_chat",
+    category: "dev",
+    keywords: ["llm", "openai", "gemini", "chat completions", "api tester", "模型", "對話", "圖片提問"],
+    summary: {
+      zh: "用 OpenAI 相容或 Gemini API 測試多輪對話，支援圖片、設定紀錄與匯出。",
+      en: "Test OpenAI-compatible or Gemini chat APIs with context, images, saved profiles, and exports."
+    }
+  },
+  {
+    name: {
       en: "Image Resize",
       zh: "圖片尺寸調整"
     },

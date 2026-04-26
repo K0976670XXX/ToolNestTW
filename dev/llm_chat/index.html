@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToolNestTW LLM 對話測試器</title>
+    <meta
+      name="description"
+      content="Chat with OpenAI-compatible or Gemini APIs in browser, save local profiles, attach images, keep context, and export conversations."
+    />
+    <meta
+      name="keywords"
+      content="llm chat,openai api,gemini api,chat completions,api tester,developer tool"
+    />
+    <link rel="stylesheet" href="/assets/css/styles.css?v=1.6.35" />
+  </head>
+  <body>
+    <div data-layout="header"></div>
+    <main class="layout-shell">
+      <article class="tool-page">
+        <section class="hero">
+          <h1>LLM 對話測試器</h1>
+          <p class="lead">用 OpenAI 相容協議或 Gemini 協議直接測試模型，支援上下文、圖片與本機設定紀錄。</p>
+        </section>
+
+        <section class="panel">
+          <h2>連線設定</h2>
+          <div class="llm-settings-grid">
+            <div class="field">
+              <label for="llm-template">服務模板</label>
+              <select id="llm-template">
+                <option value="">自訂</option>
+                <option value="openai">OpenAI</option>
+                <option value="gemini">Gemini</option>
+                <option value="openrouter">OpenRouter</option>
+                <option value="ollama">Ollama</option>
+                <option value="lmstudio">LM Studio</option>
+              </select>
+              <p class="hint">快速帶入常見 API URL 與模型範例。</p>
+            </div>
+            <div class="field">
+              <label for="llm-profile-select">快速載入</label>
+              <select id="llm-profile-select">
+                <option value="">尚無紀錄</option>
+              </select>
+              <p class="hint">成功執行過的設定會出現在這裡。</p>
+            </div>
+            <div class="field">
+              <label for="llm-name">名字</label>
+              <input id="llm-name" type="text" placeholder="例如：openAI、Gemini、本機模型" autocomplete="off" />
+              <p class="hint">同名設定會合併模型紀錄。</p>
+            </div>
+            <div class="field">
+              <label for="llm-api-url">API URL</label>
+              <input id="llm-api-url" type="text" placeholder="https://api.openai.com/v1/chat/completions" autocomplete="off" />
+              <p class="hint">Gemini 可填 generateContent 完整 URL 或 v1beta base URL。</p>
+            </div>
+            <div class="field">
+              <label for="llm-model">API MODEL</label>
+              <input id="llm-model" list="llm-model-list" type="text" placeholder="gpt-5.5 / gemini-2.5-pro" autocomplete="off" />
+              <datalist id="llm-model-list"></datalist>
+              <p class="hint">同一名字下成功用過的模型會保留。</p>
+            </div>
+            <div class="field">
+              <label for="llm-api-key">API KEY</label>
+              <input id="llm-api-key" type="password" placeholder="sk-... / AIza..." autocomplete="off" />
+              <p class="hint">只儲存在目前瀏覽器 localStorage。</p>
+            </div>
+            <div class="field">
+              <label for="llm-system">系統提示</label>
+              <textarea id="llm-system" placeholder="可選：指定模型角色、語氣或輸出格式"></textarea>
+            </div>
+            <div class="field">
+              <label for="llm-image-max-edge">圖片壓縮長邊</label>
+              <input id="llm-image-max-edge" type="number" min="256" max="4096" step="64" value="1600" />
+              <p class="hint">貼上或上傳圖片時自動縮小，避免請求過大。</p>
+            </div>
+            <div class="field">
+              <label for="llm-image-quality">圖片品質</label>
+              <input id="llm-image-quality" type="number" min="0.3" max="1" step="0.05" value="0.85" />
+              <p class="hint">JPEG/WebP 壓縮品質，預設 0.85。</p>
+            </div>
+          </div>
+          <div class="actions">
+            <label class="check-row">
+              <input id="llm-stream" type="checkbox" checked />
+              <span>串流回覆</span>
+            </label>
+            <button id="llm-save-profile" class="btn" type="button">儲存設定</button>
+            <button id="llm-delete-profile" class="btn btn-danger" type="button">刪除目前設定</button>
+            <button id="llm-toggle-key" class="btn" type="button">顯示 Key</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="llm-chat-head">
+            <div>
+              <h2>上下文控制</h2>
+              <p id="llm-context-stats" class="hint">目前上下文：0 字，約 0 tokens。</p>
+            </div>
+            <div class="actions">
+              <button id="llm-summarize-context" class="btn" type="button">摘要舊上下文</button>
+              <button id="llm-clear-summary" class="btn btn-danger" type="button">清除摘要</button>
+            </div>
+          </div>
+          <div class="llm-context-grid">
+            <div class="field">
+              <label for="llm-context-rounds">只帶最近 N 輪</label>
+              <input id="llm-context-rounds" type="number" min="1" max="200" step="1" value="10" />
+              <p class="hint">一輪約等於一次 User + Assistant。舊內容可先摘要後再省略。</p>
+            </div>
+            <div class="field">
+              <label for="llm-context-summary">舊上下文摘要</label>
+              <textarea id="llm-context-summary" placeholder="按「摘要舊上下文」後會填入，後續請求會自動帶入。"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel llm-chat-panel">
+          <div class="llm-chat-head">
+            <div>
+              <h2>對話</h2>
+              <p id="llm-status" class="hint">尚未送出訊息。</p>
+            </div>
+            <div class="actions">
+              <button id="llm-export-md" class="btn" type="button">匯出 Markdown</button>
+              <button id="llm-export-json" class="btn" type="button">匯出 JSON</button>
+              <button id="llm-clear-chat" class="btn btn-danger" type="button">清除對話</button>
+            </div>
+          </div>
+
+          <div id="llm-messages" class="llm-messages" aria-live="polite"></div>
+
+          <div id="llm-attachments" class="llm-attachments" hidden></div>
+
+          <div class="llm-composer">
+            <textarea id="llm-input" placeholder="輸入訊息，可直接 Ctrl+V 貼上圖片..." rows="5"></textarea>
+            <div class="llm-composer-actions">
+              <label class="btn llm-file-btn" for="llm-image-input">加入圖片</label>
+              <input id="llm-image-input" type="file" accept="image/*" multiple hidden />
+              <button id="llm-stop" class="btn" type="button" disabled>停止</button>
+              <button id="llm-send" class="btn btn-primary" type="button">送出</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>推薦工具</h2>
+          <ul class="link-list" data-layout="recommended"></ul>
+        </section>
+      </article>
+    </main>
+    <div data-layout="footer"></div>
+
+    <script type="module">
+      import initLayout from "/assets/components/layout.js?v=1.6.33";
+      import initLlmChat from "/assets/js/tools/llm_chat.js?v=1.6.35";
+
+      initLayout();
+      initLlmChat();
+    </script>
+  </body>
+</html>

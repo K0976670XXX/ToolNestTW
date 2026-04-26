@@ -3,7 +3,7 @@ import {
   getToolByPath,
   getToolDisplayName,
   toolRegistry
-} from "/assets/js/tools.registry.js?v=1.6.28";
+} from "/assets/js/tools.registry.js?v=1.6.33";
 import { getRecentTools, rememberRecentTool } from "/assets/js/utils.js?v=1.6.26";
 import { initTheme } from "/assets/components/theme.js?v=1.6.26";
 import { getLanguage, initLanguageToggle, onLanguageChange, t } from "/assets/js/i18n.js?v=1.6.26";

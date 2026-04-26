@@ -302,7 +302,38 @@
 
 ---
 
-# 15. 新工具開發 SOP
+# 15. 這次新增工具實例：LLM 對話測試器
+
+這次新增的是開發工具類別的 `LLM 對話測試器`，目的是：
+
+* 使用者自行輸入名字、API URL、API MODEL、API KEY
+* 依名字把成功使用過的設定寫入 `localStorage`
+* 同一名字下保留多個成功使用過的模型，讓下次能用選單快速套用
+* 自動判斷 `OpenAI-compatible` 或 `Gemini generateContent` 協議
+* 支援 OpenAI-compatible SSE 與 Gemini `streamGenerateContent` 串流回覆
+* 內建 OpenAI、Gemini、OpenRouter、Ollama、LM Studio 服務模板
+* 針對 400、401、403、404、429、5xx、CORS/連線失敗提供較可讀的錯誤提示
+* 保留本輪對話上下文並支援系統提示
+* 可設定只帶最近 N 輪對話，並顯示目前請求上下文的字數 / 詞數 / token 粗估
+* 可一鍵摘要 N 輪以前的舊對話，後續請求會帶入摘要與最近 N 輪
+* 支援貼上或選擇圖片進行多模態提問，並在送出前自動壓縮圖片
+* 匯出對話為 `Markdown` 或 `JSON`
+* 提供停止請求、清除對話、顯示/隱藏 API KEY 等基本操作
+
+本次落點：
+
+* 頁面：`dev/llm_chat/index.html`
+* 邏輯：`assets/js/tools/llm_chat.js`
+* redirect：`tools/dev/llm_chat.html`
+* 註冊：`assets/js/tools.registry.js`
+
+這個工具適合作為之後新增「外部 API 設定 + localStorage profile + 多輪狀態管理 + 檔案附件」類型功能的參考模板。
+
+注意：此工具直接從瀏覽器呼叫 API，目標 API 需要允許 CORS；否則應改成後端 proxy。
+
+---
+
+# 16. 新工具開發 SOP
 
 實際操作時，建議照這個順序：
 
@@ -317,7 +348,7 @@
 
 ---
 
-# 16. 維護時優先檢查哪些地方
+# 17. 維護時優先檢查哪些地方
 
 如果某個工具「頁面存在但站內找不到」，先檢查：
 
@@ -339,7 +370,7 @@
 
 ---
 
-# 17. 開發準則總結
+# 18. 開發準則總結
 
 開發任何新工具時，先問四件事：
 

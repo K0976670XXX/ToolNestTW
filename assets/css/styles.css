@@ -1486,6 +1486,194 @@ textarea[readonly] {
   background: #fff;
 }
 
+.llm-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+.llm-settings-grid .field {
+  margin: 0;
+}
+
+.llm-settings-grid .field:nth-child(4),
+.llm-settings-grid .field:nth-child(7) {
+  grid-column: span 2;
+}
+
+.llm-settings-grid textarea {
+  min-height: 92px;
+}
+
+.llm-context-grid {
+  display: grid;
+  grid-template-columns: minmax(180px, 260px) minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.llm-context-grid .field {
+  margin: 0;
+}
+
+.llm-context-grid textarea {
+  min-height: 120px;
+}
+
+.llm-chat-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.llm-chat-head h2 {
+  margin-bottom: 4px;
+}
+
+.llm-messages {
+  display: grid;
+  gap: 12px;
+  min-height: 260px;
+  max-height: min(62vh, 680px);
+  overflow: auto;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 12% 0, color-mix(in oklab, var(--primary) 10%, transparent), transparent 28%),
+    var(--surface-soft);
+}
+
+.llm-message {
+  width: fit-content;
+  max-width: 92%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 8px 18px rgba(27, 53, 113, 0.08);
+}
+
+.llm-message.is-user {
+  justify-self: end;
+  background: color-mix(in oklab, var(--primary) 14%, var(--surface));
+}
+
+.llm-message.is-assistant {
+  justify-self: start;
+}
+
+.llm-message h3 {
+  margin: 0 0 6px;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+.llm-message pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font: inherit;
+}
+
+.llm-message-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.llm-message-images img {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-soft);
+}
+
+.llm-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.llm-attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 220px;
+  padding: 6px 9px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.llm-attachment img {
+  width: 38px;
+  height: 38px;
+  object-fit: cover;
+  border-radius: 999px;
+}
+
+.llm-attachment span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.llm-attachment small {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.llm-composer {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.llm-composer textarea {
+  min-height: 120px;
+}
+
+.llm-composer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.llm-file-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.check-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.check-row input {
+  width: auto;
+  min-width: 18px;
+  accent-color: var(--primary);
+}
+
 #uc-inputs {
   display: grid;
   gap: 10px;
@@ -1606,8 +1794,19 @@ textarea[readonly] {
   .preview-grid,
   .batch-gallery,
   .perspective-workspace,
-  .video-crop-grid {
+  .video-crop-grid,
+  .llm-settings-grid,
+  .llm-context-grid {
     grid-template-columns: 1fr;
+  }
+
+  .llm-settings-grid .field:nth-child(4),
+  .llm-settings-grid .field:nth-child(7) {
+    grid-column: auto;
+  }
+
+  .llm-message {
+    max-width: 100%;
   }
 
   .search-row {
